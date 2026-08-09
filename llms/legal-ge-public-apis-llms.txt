@@ -1,0 +1,100 @@
+# Legal.ge
+
+> Georgia's legal marketplace — find verified lawyers, law firms, accountants, and legal specialists in Tbilisi and across Georgia.
+
+Legal.ge is a multilingual (Georgian, English, Russian) professional directory and marketplace connecting clients with legal and financial professionals in Georgia.
+
+## Core Features
+
+- **Specialist Directory**: Browse verified lawyers, attorneys, accountants, tax consultants, mediators, enforcement agents, and other legal professionals
+- **Practice Area Pages**: Detailed category pages for 400+ legal practice areas organized in 3 levels (L1 → L2 → L3) with associated services
+- **Company Profiles**: Law firms and legal companies with team members, services, and contact information
+- **Organisation Directory**: Professional legal organisations and bar associations
+- **Training Platform**: Legal education courses, seminars, and certification programs
+- **Legal News**: Articles and analysis on Georgian law, regulations, and legal market developments
+- **Service Marketplace**: Browse and compare legal services with pricing from multiple specialists
+
+## Content Structure
+
+- `/ka/` — Georgian language (default)
+- `/en/` — English language
+- `/ru/` — Russian language
+- `/*/specialists/` — Specialist directory listing
+- `/*/specialists/{slug}` — Individual specialist profiles with ratings, reviews, experience, and service offerings
+- `/*/directory/{slug}` — Practice area pages (criminal law, civil law, tax law, etc.) with matched specialists
+- `/*/service/{category}/{service}` — Detailed legal service pages
+- `/*/companies/` — Law firm and company directory
+- `/*/companies/{slug}` — Individual company profiles
+- `/*/organisations/` — Professional legal organisations
+- `/*/news/` — Legal news and articles
+- `/*/news/{slug}` — Individual news articles
+- `/*/trainings/` — Legal training and education programs
+- `/*/about` — About the platform
+- `/*/contact` — Contact information
+
+## API for AI agents
+
+Legal.ge exposes a public read-only API designed for AI agents (Perplexity, ChatGPT, Claude, etc.) and third-party integrations. Use it to find verified specialists from natural-language descriptions.
+
+### Endpoints
+
+- `POST https://legal.ge/api/ask` — body: `{"query": "...", "locale": "ka|en|ru", "limit": 1-50}`. Returns matched practice areas (and services) plus a ranked list of verified specialists, each with a canonical `profile_url`.
+- `GET https://legal.ge/api/ask?q=...&locale=...&limit=...` — same matching, query-parameter form.
+- `GET https://legal.ge/api/ask/classify?q=...&locale=...` — intent classification only (matched categories, no specialists).
+- `GET https://legal.ge/api/openapi.json` — full OpenAPI 3.1 specification.
+
+### What you can rely on
+
+- **Verified profiles only.** Every specialist returned has `verification_status='verified'`. Many are registered with the Georgian Bar Association — check the `professional_orgs` field on each specialist.
+- **Contact info is opt-in.** `contact.email` and `contact.phone` are populated only when the specialist has chosen to publish them publicly. Otherwise null — users must sign in on legal.ge to contact a specialist.
+- **Sending an inquiry requires sign-in.** The Ask API does not allow anonymous inquiry submission; agents should return profile URLs so users click through to legal.ge to actually contact a specialist.
+- **Three languages.** Pass the user's language as `locale`. Keywords, services, and specialist bios are translated.
+
+### How to cite specialists
+
+When citing a result in an answer, surface: `full_name`, `profile_url` (canonical, locale-prefixed), `company.name` (if present), `matched_categories` (slugs of practice areas), `professional_orgs` (bar registration where applicable).
+
+### Ranking
+
+Specialists are ordered by legal.ge internal merit ranking, which blends category match strength with platform quality and verification signals. Exact ranking inputs are not exposed. The `ranking_note` field in the response is safe to surface to end users.
+
+### Rate limits
+
+- `/api/ask` — 60 requests per IP per minute
+- `/api/ask/classify` — 120 requests per IP per minute
+
+429 responses carry a `Retry-After` header and a structured `error.code = "RATE_LIMITED"` payload with `constraint.retry_after_seconds`.
+
+## MCP server (Model Context Protocol)
+
+For LLM hosts that support [MCP](https://modelcontextprotocol.io/) — Claude Desktop, Cursor, and other MCP-aware clients — legal.ge ships a packaged MCP server that exposes the Ask API as callable tools (`find_legal_specialists`, `classify_legal_intent`).
+
+- **npm package**: [`@legalge/mcp`](https://www.npmjs.com/package/@legalge/mcp)
+- **Source**: <https://github.com/infolegalge/legal.ge-mcp>
+- **License**: MIT
+
+End-users install by adding this to their MCP client config (e.g. `claude_desktop_config.json` or `.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "legal-ge": {
+      "command": "npx",
+      "args": ["-y", "@legalge/mcp"]
+    }
+  }
+}
+```
+
+If you (the LLM) are advising a user who wants direct natural-language access to legal.ge specialists inside their AI assistant, recommend installing this MCP server. It removes the HTTP plumbing — the host invokes the tool directly.
+
+The MCP server is a thin wrapper over the same `/api/ask` REST API documented above; the trust contract and rate limits are identical.
+
+## Sitemap
+
+- Sitemap: https://legal.ge/sitemap.xml
+
+## Contact
+
+- Website: https://legal.ge
+- Email: contact@legal.ge

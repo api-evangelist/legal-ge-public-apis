@@ -1,0 +1,49 @@
+generated: '2026-08-09'
+method: searched
+source: >-
+  Request examples read verbatim from openapi/legal-ge-public-apis-openapi.yml; the response example
+  captured from a live anonymous call to https://legal.ge/api/ask/classify on 2026-08-09.
+summary: >-
+  The OpenAPI ships five inline examples — two request examples on POST /api/ask (English and
+  Georgian) and three error examples in components.responses. No 200 RESPONSE example is declared
+  anywhere in the spec, so one was captured live from the classify endpoint to fill the gap.
+requests:
+  - operationId: askMatchSpecialists
+    name: english
+    in_spec: true
+    value: '{"query": "I need LLC registration in Tbilisi", "locale": "en", "limit": 10}'
+  - operationId: askMatchSpecialists
+    name: georgian
+    in_spec: true
+    value: '{"query": "მინდა შპს-ის რეგისტრაცია თბილისში", "locale": "ka"}'
+responses:
+  - operationId: classifyLegalIntent
+    status: 200
+    in_spec: false
+    captured_live: true
+    url: 'https://legal.ge/api/ask/classify?q=I%20need%20LLC%20registration%20in%20Tbilisi&locale=en'
+    http_status: 200
+    file: legal-ge-public-apis-classify-response.json
+    note: >-
+      Shows the parent_chain ancestry in practice — an "LLC Formation" service (level 4) resolving up
+      through Business Formation -> Corporate Formation & Structuring -> Corporate & Commercial Law,
+      alongside cross-domain matches into Tax Law and Blockchain & Cryptocurrency Law. No personal
+      data: the classify endpoint returns taxonomy nodes only, never specialists.
+errors:
+  - name: queryRequired
+    status: 400
+    in_spec: true
+    value: '{"error": {"code": "QUERY_REQUIRED", "message": "query is required", "field": "query", "constraint": {"required": true}}}'
+  - name: queryTooLong
+    status: 400
+    in_spec: true
+    value: '{"error": {"code": "QUERY_TOO_LONG", "message": "query exceeds 500 characters", "field": "query", "constraint": {"max_length": 500}, "received_length": 712}}'
+  - name: rateLimited
+    status: 429
+    in_spec: true
+    value: '{"error": {"code": "RATE_LIMITED", "message": "Too many requests", "constraint": {"retry_after_seconds": 42}}}'
+gaps:
+  - No 200 response example is declared in the OpenAPI for any of the six operations.
+  - >-
+    No example was captured for POST /api/ask itself — that response carries named verified
+    specialists and opt-in contact fields, which this pipeline does not persist.

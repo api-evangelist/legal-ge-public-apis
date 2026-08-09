@@ -1,0 +1,80 @@
+generated: '2026-08-09'
+method: searched
+status: published
+source: https://www.npmjs.com/package/@legalge/mcp
+probe:
+  method: live stdio tools/list against `npx -y @legalge/mcp`
+  jsonrpc: '2.0'
+  protocol_version: '2025-06-18'
+  result: 200-equivalent — 2 tools returned with full inputSchema
+  captured: mcp/legal-ge-public-apis-tools-list.json
+server:
+  name: legalge-mcp
+  registry_name: io.github.infolegalge/legal-ge
+  version: 0.1.1
+  transport: stdio
+  hosted_http_endpoint: null
+  hosted_note: >-
+    There is NO hosted/remote HTTP MCP endpoint. https://legal.ge/mcp and https://legal.ge/api/mcp
+    both return 404. The server is distributed as an npm package the end user installs locally and
+    the MCP host launches over stdio.
+  package:
+    registry: npm
+    identifier: '@legalge/mcp'
+    version: 0.1.1
+    license: MIT
+  repository: https://github.com/infolegalge/legal.ge-mcp
+  registry_manifest: mcp/legal-ge-public-apis-server.json
+  registry_manifest_schema: https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json
+  environment_variables:
+    - name: LEGALGE_BASE_URL
+      required: false
+      secret: false
+      description: Override the legal.ge API base URL (e.g. for staging). Defaults to https://legal.ge.
+  capabilities:
+    tools: true
+    resources: false
+    prompts: false
+  auth: none
+install:
+  claude_desktop: |
+    {
+      "mcpServers": {
+        "legal-ge": {
+          "command": "npx",
+          "args": ["-y", "@legalge/mcp"]
+        }
+      }
+    }
+  cursor: same shape in ~/.cursor/mcp.json or .cursor/mcp.json
+tools:
+  - name: find_legal_specialists
+    description: >-
+      Find verified legal specialists in Georgia (the country, not the US state) from a
+      natural-language description of a legal situation or need. Returns matched practice areas
+      (and specific services where applicable) plus a ranked list of verified specialists, each
+      with a canonical profile URL on legal.ge. Supports Georgian (ka), English (en) and Russian (ru).
+    source_operation: openapi/legal-ge-public-apis-openapi.yml#askMatchSpecialists
+    backing_call: POST https://legal.ge/api/ask
+    inputs: [query, locale, limit]
+    required: [query]
+  - name: classify_legal_intent
+    description: >-
+      Classify a free-text legal question into matched practice areas (categories and specific
+      services) without returning specialists. Lighter weight than find_legal_specialists; returns
+      matched categories with parent chains.
+    source_operation: openapi/legal-ge-public-apis-openapi.yml#classifyLegalIntent
+    backing_call: GET https://legal.ge/api/ask/classify
+    inputs: [query, locale]
+    required: [query]
+side_effects:
+  read_only: true
+  note: >-
+    The server cannot create inquiries, bookings, or any other side effect — it only queries. Sending
+    an inquiry to a specialist requires the user to sign in on legal.ge, which is deliberately not
+    exposed to agents.
+x-evidence:
+  fetched: '2026-08-09'
+  npm_status: 200
+  github_status: 200
+  tools_list: 2 tools with inputSchema, captured verbatim

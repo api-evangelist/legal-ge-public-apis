@@ -1,0 +1,38 @@
+generated: '2026-08-09'
+method: searched
+source: https://registry.npmjs.org/@legalge/mcp
+summary: >-
+  legal.ge publishes one first-party package: the MCP server that wraps the public Ask API as
+  callable agent tools. There is no conventional language SDK (no PyPI, Maven, NuGet, pkg.go.dev,
+  RubyGems, Packagist or crates.io package) — the REST API is keyless and small enough that the
+  provider documents raw HTTP instead.
+packages:
+  - language: typescript
+    registry: npm
+    name: '@legalge/mcp'
+    kind: mcp-server
+    version: 0.1.1
+    versions: ['0.1.0', '0.1.1']
+    license: MIT
+    url: https://www.npmjs.com/package/@legalge/mcp
+    repository: https://github.com/infolegalge/legal.ge-mcp
+    install: npx -y @legalge/mcp
+    transport: stdio
+    official: true
+    description: >-
+      MCP server for legal.ge — find verified legal specialists in Georgia from natural-language
+      queries via Claude Desktop, Cursor, or any MCP-aware client. Thin client over POST /api/ask
+      and GET /api/ask/classify.
+registries_checked:
+  - {registry: npm, result: '@legalge/mcp found'}
+  - {registry: pypi, result: none}
+  - {registry: maven-central, result: none}
+  - {registry: nuget, result: none}
+  - {registry: pkg.go.dev, result: none}
+  - {registry: rubygems, result: none}
+  - {registry: packagist, result: none}
+  - {registry: crates.io, result: none}
+x-evidence:
+  fetched: '2026-08-09'
+  url: https://registry.npmjs.org/@legalge/mcp
+  http_status: 200

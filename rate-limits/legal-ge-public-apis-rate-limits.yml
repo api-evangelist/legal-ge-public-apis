@@ -1,0 +1,57 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+generated: '2026-08-09'
+method: searched
+provider: legal.ge Public APIs
+providerId: legal-ge-public-apis
+description: >-
+  Per-IP rate limits published for the legal.ge Public API. There are no plans or tiers — the API is
+  free and keyless, and the limit is the only gate. Limits are documented in llms.txt and, for the
+  two directory endpoints, in the OpenAPI operation descriptions themselves.
+sources:
+  - https://legal.ge/llms.txt
+  - https://legal.ge/api/openapi.json
+headers:
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+errorCode: RATE_LIMITED
+errorField: error.constraint.retry_after_seconds
+limits:
+  - name: Ask — match specialists
+    operations: [askMatchSpecialists, askMatchSpecialistsGet]
+    path: /api/ask
+    scope: ip
+    metric: requests_per_minute
+    limit: 60
+    timeFrame: minute
+    source: https://legal.ge/llms.txt
+  - name: Classify legal intent
+    operations: [classifyLegalIntent]
+    path: /api/ask/classify
+    scope: ip
+    metric: requests_per_minute
+    limit: 120
+    timeFrame: minute
+    source: https://legal.ge/llms.txt
+  - name: Specialist name search
+    operations: [searchSpecialistsByName]
+    path: /api/specialists/search
+    scope: ip
+    metric: requests_per_minute
+    limit: 30
+    timeFrame: minute
+    source: openapi operation description
+  - name: Reveal specialist contact field
+    operations: [revealSpecialistContact]
+    path: /api/specialists/{id}/contact
+    scope: ip
+    metric: requests_per_minute
+    limit: 10
+    timeFrame: minute
+    source: openapi operation description
+    note: Deliberately low to make bulk PII harvest impractical.
+undocumented:
+  - operationId: searchServicesAndCategories
+    path: /api/service-search
+    note: No rate limit published for this operation.

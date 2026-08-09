@@ -1,8 +1,15 @@
 name: legal.ge Public APIs
 description: >-
-  Georgia's legal marketplace exposing a public, keyless, read-only REST API for matching legal situations to verified
-  specialists, plus an OpenAPI 3.1 contract, an llms.txt agent contract, and an installable MCP server. Multilingual
-  (Georgian, English, Russian) directory of lawyers, law firms, accountants, and legal specialists.
+  Georgia's (the country's) legal marketplace, exposing a public, keyless, read-only REST API that turns a
+  natural-language description of a legal problem into matched practice areas and a ranked list of verified
+  specialists — lawyers, law firms, accountants, tax consultants, mediators and enforcement agents — each with a
+  canonical, locale-prefixed profile URL. The surface is deliberately agent-first: an OpenAPI 3.1 contract at
+  /api/openapi.json, an APIs.json 0.19 index at /apis.json, an llms.txt trust contract at /llms.txt, a robots.txt
+  that names and allows eleven AI crawlers on the public API paths, and an installable MCP server (@legalge/mcp,
+  MIT) exposing find_legal_specialists and classify_legal_intent to Claude Desktop, Cursor and any MCP-aware
+  client. Trilingual across Georgian, English and Russian; every specialist returned is verification-checked, and
+  contact details are opt-in only.
+image: https://legal.ge/apple-touch-icon.png
 url: https://legal-ge-public-apis.apievangelist.com/apis.yml
 created: '2026-08-09'
 modified: '2026-08-09'
@@ -20,12 +27,16 @@ tags:
   - professional-services
   - marketplace
   - multilingual
+  - legal-tech
 apis:
   - name: legal.ge Ask API
     description: >-
       Public, keyless, read-only REST API matching natural-language legal queries to practice areas, services, and a
-      ranked list of verified specialists. Endpoints: POST/GET /api/ask and GET /api/ask/classify. Rate-limited per IP.
-    humanURL: https://legal.ge/llms.txt
+      ranked list of verified specialists. Six operations across five paths: POST/GET /api/ask, GET
+      /api/ask/classify, GET /api/service-search, GET /api/specialists/search, and GET
+      /api/specialists/{id}/contact. No authentication; gated by per-IP rate limits (60/min ask, 120/min classify,
+      30/min name search, 10/min contact reveal). Errors use a stable custom envelope with a machine-readable code.
+    humanURL: https://legal.ge
     baseURL: https://legal.ge
     tags:
       - legal
@@ -34,24 +45,138 @@ apis:
       - directory
       - georgia
       - ai-agents
-      - mcp
-      - model-context-protocol
       - specialists
       - professional-services
       - marketplace
       - multilingual
     properties:
       - type: OpenAPI
+        url: openapi/legal-ge-public-apis-openapi.yml
+      - type: OpenAPI
+        name: Provider-published OpenAPI 3.1 (live)
         url: https://legal.ge/api/openapi.json
-      - type: LLMsTxt
-        url: https://legal.ge/llms.txt
       - type: Documentation
+        name: llms.txt agent contract
+        url: https://legal.ge/llms.txt
+      - type: Authentication
+        url: authentication/legal-ge-public-apis-authentication.yml
+      - type: Conventions
+        url: conventions/legal-ge-public-apis-conventions.yml
+      - type: ErrorCatalog
+        url: errors/legal-ge-public-apis-problem-types.yml
+      - type: RateLimits
+        url: rate-limits/legal-ge-public-apis-rate-limits.yml
+      - type: DataModel
+        url: data-model/legal-ge-public-apis-data-model.yml
+      - type: Examples
+        url: examples/legal-ge-public-apis-examples.yml
+      - type: Overlay
+        url: overlays/legal-ge-public-apis-openapi-overlay.yaml
+      - type: TermsOfService
+        url: https://legal.ge/terms
+  - name: legal.ge MCP Server
+    description: >-
+      First-party Model Context Protocol server wrapping the Ask API as two callable tools —
+      find_legal_specialists (POST /api/ask) and classify_legal_intent (GET /api/ask/classify). Distributed as the
+      MIT-licensed npm package @legalge/mcp and run locally over stdio (npx -y @legalge/mcp); there is no hosted
+      HTTP MCP endpoint. Read-only by construction: it cannot create inquiries or bookings. Trilingual (ka/en/ru),
+      no API key required, optional LEGALGE_BASE_URL override.
+    humanURL: https://github.com/infolegalge/legal.ge-mcp
+    baseURL: https://legal.ge
+    tags:
+      - mcp
+      - model-context-protocol
+      - ai-agents
+      - legal
+      - georgia
+      - agent-native
+    properties:
+      - type: MCPServer
+        url: mcp/legal-ge-public-apis-mcp.yml
+      - type: ToolCrosswalk
+        url: mcp/legal-ge-public-apis-tool-crosswalk.yml
+      - type: Documentation
+        name: Source repository
         url: https://github.com/infolegalge/legal.ge-mcp
+      - type: Packages
+        name: npm package
+        url: https://www.npmjs.com/package/@legalge/mcp
+      - type: OpenAPI
+        name: Underlying HTTP API specification
+        url: openapi/legal-ge-public-apis-openapi.yml
 maintainers:
   - FN: legal.ge
+    email: contact@legal.ge
     url: https://legal.ge
 generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 90
   at: '2026-08-09T11:15:19.347Z'
+x-enrichment:
+  date: '2026-08-09'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v1
+common:
+- type: DomainSecurity
+  url: security/legal-ge-public-apis-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/legal-ge-public-apis-agentic-access.yml
+- type: Documentation
+  name: llms.txt agent contract
+  url: https://legal.ge/llms.txt
+- type: APIReference
+  name: OpenAPI 3.1 specification
+  url: https://legal.ge/api/openapi.json
+- type: GitHubOrganization
+  url: https://github.com/infolegalge
+- type: Support
+  url: https://legal.ge/en/contact
+- type: Blog
+  name: Legal and economic news
+  url: https://legal.ge/en/news
+- type: Pricing
+  name: Platform pricing (the API itself is free and keyless)
+  url: https://legal.ge/en/pricing
+- type: SignUp
+  url: https://legal.ge/en/register
+- type: Login
+  url: https://legal.ge/en/login
+- type: TermsOfService
+  url: https://legal.ge/terms
+- type: PrivacyPolicy
+  url: https://legal.ge/privacy
+- type: OpenAPI
+  url: openapi/legal-ge-public-apis-openapi.yml
+- type: LLMsTxt
+  url: llms/legal-ge-public-apis-llms.txt
+- type: MCPServer
+  url: mcp/legal-ge-public-apis-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/legal-ge-public-apis-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Authentication
+  url: authentication/legal-ge-public-apis-authentication.yml
+- type: Conventions
+  url: conventions/legal-ge-public-apis-conventions.yml
+- type: ErrorCatalog
+  url: errors/legal-ge-public-apis-problem-types.yml
+- type: RateLimits
+  url: rate-limits/legal-ge-public-apis-rate-limits.yml
+- type: DataModel
+  url: data-model/legal-ge-public-apis-data-model.yml
+- type: Examples
+  url: examples/legal-ge-public-apis-examples.yml
+- type: Lifecycle
+  url: lifecycle/legal-ge-public-apis-lifecycle.yml
+- type: Conformance
+  url: conformance/legal-ge-public-apis-conformance.yml
+- type: Packages
+  url: packages/legal-ge-public-apis-packages.yml
+- type: Overlay
+  url: overlays/legal-ge-public-apis-openapi-overlay.yaml
+- type: APIsJSON
+  name: Provider-published APIs.json 0.19 index
+  url: https://legal.ge/apis.json

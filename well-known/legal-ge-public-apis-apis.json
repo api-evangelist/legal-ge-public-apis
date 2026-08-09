@@ -1,0 +1,112 @@
+{
+  "aid": "legal.ge:apis",
+  "name": "legal.ge Public APIs",
+  "description": "Machine-readable index of the public, read-only APIs published by legal.ge — the verified directory of legal specialists in Georgia (the country). Designed for AI agents and third-party integrations, trilingual (Georgian, English, Russian).",
+  "url": "https://legal.ge/apis.json",
+  "created": "2026-08-09",
+  "modified": "2026-08-09",
+  "specificationVersion": "0.19",
+  "type": "Index",
+  "image": "https://legal.ge/apple-touch-icon.png",
+  "tags": [
+    "legal",
+    "law",
+    "georgia",
+    "legal-services",
+    "directory",
+    "ai-agents",
+    "mcp"
+  ],
+  "apis": [
+    {
+      "aid": "legal.ge:public-api",
+      "name": "legal.ge Public API",
+      "description": "Read-only API for finding verified Georgian legal specialists from natural-language queries. Maps free text to legal practice areas and returns ranked verified specialists with canonical profile URLs. Sending an inquiry requires sign-in on legal.ge and is not exposed here.",
+      "image": "https://legal.ge/apple-touch-icon.png",
+      "humanURL": "https://legal.ge",
+      "baseURL": "https://legal.ge",
+      "version": "1.0.0",
+      "tags": [
+        "legal",
+        "law",
+        "georgia",
+        "specialists",
+        "directory",
+        "ai-agents"
+      ],
+      "properties": [
+        {
+          "type": "OpenAPI",
+          "name": "OpenAPI 3.1 specification",
+          "url": "https://legal.ge/api/openapi.json",
+          "mediaType": "application/json"
+        },
+        {
+          "type": "Documentation",
+          "name": "AI-agent contract (llms.txt)",
+          "url": "https://legal.ge/llms.txt",
+          "mediaType": "text/plain"
+        },
+        {
+          "type": "TermsOfService",
+          "url": "https://legal.ge/terms"
+        }
+      ],
+      "contact": [
+        {
+          "FN": "legal.ge",
+          "email": "contact@legal.ge",
+          "URL": "https://legal.ge"
+        }
+      ]
+    },
+    {
+      "aid": "legal.ge:mcp-server",
+      "name": "legal.ge MCP Server",
+      "description": "Model Context Protocol server wrapping the legal.ge Ask API as callable tools (find_legal_specialists, classify_legal_intent) for Claude Desktop, Cursor and other MCP-aware clients. Trilingual (ka/en/ru), read-only, no API key required.",
+      "image": "https://legal.ge/apple-touch-icon.png",
+      "humanURL": "https://github.com/infolegalge/legal.ge-mcp",
+      "baseURL": "https://legal.ge",
+      "version": "0.1.1",
+      "tags": [
+        "mcp",
+        "model-context-protocol",
+        "legal",
+        "georgia",
+        "ai-agents"
+      ],
+      "properties": [
+        {
+          "type": "OpenAPI",
+          "name": "Underlying HTTP API specification",
+          "url": "https://legal.ge/api/openapi.json",
+          "mediaType": "application/json"
+        },
+        {
+          "type": "Documentation",
+          "name": "Source repository",
+          "url": "https://github.com/infolegalge/legal.ge-mcp"
+        },
+        {
+          "type": "Documentation",
+          "name": "npm package",
+          "url": "https://www.npmjs.com/package/@legalge/mcp"
+        }
+      ],
+      "contact": [
+        {
+          "FN": "legal.ge",
+          "email": "contact@legal.ge",
+          "URL": "https://legal.ge"
+        }
+      ]
+    }
+  ],
+  "maintainers": [
+    {
+      "FN": "legal.ge",
+      "email": "contact@legal.ge",
+      "URL": "https://legal.ge"
+    }
+  ]
+}

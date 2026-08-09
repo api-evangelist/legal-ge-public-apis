@@ -1,0 +1,48 @@
+generated: '2026-08-09'
+method: probed
+source: openapi/legal-ge-public-apis-openapi.yml + live probes of legal.ge
+versioning:
+  scheme: none
+  current: 1.0.0
+  in_path: false
+  in_header: false
+  notes: >-
+    The wire surface is unversioned — no /v1 prefix, no Accept-Version or API-Version header. The
+    only version signal published anywhere is info.version = 1.0.0 in the OpenAPI document (and
+    version 0.1.1 on the separately-versioned MCP package).
+deprecation:
+  policy_url: null
+  sunset_header: unknown
+  documented: false
+  notes: >-
+    No deprecation or sunset policy is published, and no RFC 8594 Sunset/Deprecation header is
+    documented or declared in the spec.
+sla:
+  url: null
+  uptime_target: null
+  documented: false
+status_page:
+  url: null
+  probed:
+    - {url: 'https://status.legal.ge', status: 404}
+changelog:
+  url: null
+  probed:
+    - {url: 'https://legal.ge/en/changelog', status: 404}
+  notes: >-
+    No dated changelog. The MCP package's npm version history (0.1.0 -> 0.1.1) is the only public
+    release trail; the REST API itself has published exactly one version.
+deprecated_operations: []
+maturity:
+  stage: initial-release
+  first_published: '2026-08-09'
+  notes: >-
+    Both the APIs.json index and the OpenAPI document carry created/modified dates of 2026-08-09 and
+    the MCP repo was last pushed the same day — this is a newly published API surface, not a mature
+    one with history to capture.
+x-evidence:
+  fetched: '2026-08-09'
+  probes:
+    - {url: 'https://status.legal.ge', status: 404}
+    - {url: 'https://trust.legal.ge', status: 404}
+    - {url: 'https://legal.ge/en/changelog', status: 404}

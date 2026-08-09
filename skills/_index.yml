@@ -1,0 +1,24 @@
+generated: '2026-08-09'
+method: generated
+source: >-
+  Packaged Agent Skills generated from openapi/legal-ge-public-apis-openapi.yml (OpenAPI 3.1.0,
+  fetched verbatim from https://legal.ge/api/openapi.json). Every operationId is verified in the
+  spec; cross-cutting rules cite ../authentication/, ../errors/, ../rate-limits/, ../conventions/
+  and the trust contract published at https://legal.ge/llms.txt. The provider publishes no skills or
+  AGENTS.md of its own — its agent surface is llms.txt plus the @legalge/mcp server.
+skills:
+  - file: legal-ge-public-apis-find-a-verified-specialist.md
+    name: Find a verified legal specialist in Georgia
+    api: openapi/legal-ge-public-apis-openapi.yml
+    operations: [classifyLegalIntent, askMatchSpecialists, askMatchSpecialistsGet]
+  - file: legal-ge-public-apis-classify-a-legal-question.md
+    name: Classify a legal question into Georgian practice areas
+    api: openapi/legal-ge-public-apis-openapi.yml
+    operations: [classifyLegalIntent, searchServicesAndCategories]
+  - file: legal-ge-public-apis-look-up-a-specialist-by-name.md
+    name: Look up a specialist by name and reveal a contact field
+    api: openapi/legal-ge-public-apis-openapi.yml
+    operations: [searchSpecialistsByName, revealSpecialistContact]
+coverage:
+  operations_total: 6
+  operations_covered: 6

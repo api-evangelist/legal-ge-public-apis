@@ -1,0 +1,85 @@
+generated: '2026-08-09'
+method: derived
+source: openapi/legal-ge-public-apis-openapi.yml (8 components.schemas, $ref links and id-reference fields)
+notation: >-
+  Relationships use has_one / has_many / belongs_to with the reference field name in `via`; direction
+  is from the entity that owns the reference field. Identity is a UUID on every entity; the public
+  addressable identity is the slug-based canonical `profile_url`.
+identifiers:
+  primary: 'uuid (string, format: uuid)'
+  public_url: >-
+    profile_url — canonical, locale-prefixed (/ka/, /en/, /ru/) specialist URL. This, not the UUID,
+    is what agents are told to cite.
+  slug: human-readable slug on specialists, companies, categories and services
+entities:
+  - name: Specialist
+    schema: AskSpecialist
+    domain: directory
+    description: >-
+      A verified legal professional (lawyer, attorney, accountant, tax consultant, mediator,
+      enforcement agent). Every specialist returned by the API is verification_status='verified'.
+    key_fields: [id, slug, full_name, role_title, bio_excerpt, avatar_url, profile_url]
+  - name: SpecialistNameResult
+    schema: SpecialistNameResult
+    domain: directory
+    description: Thin projection of Specialist returned by name search; carries info_activate but no contact block.
+    key_fields: [id, full_name, avatar_url, slug, info_activate]
+  - name: Company
+    schema: AskSpecialist.company
+    domain: directory
+    description: A law firm or legal company. Inlined on the specialist, not separately addressable in this spec.
+    key_fields: [id, name, slug]
+  - name: ProfessionalOrg
+    schema: AskSpecialist.professional_orgs[]
+    domain: directory
+    description: >-
+      A professional body registration (e.g. the Georgian Bar Association) held by a specialist,
+      with the registration number.
+    key_fields: [org_id, registration_number]
+  - name: Contact
+    schema: AskSpecialist.contact
+    domain: pii
+    description: >-
+      Opt-in contact block (email, phone). Both null unless the profile chose public display.
+      Individually revealable one field at a time via revealSpecialistContact.
+    key_fields: [email, phone]
+  - name: MatchedCategory
+    schema: MatchedCategory
+    domain: taxonomy
+    description: >-
+      A node matched by the classifier — either a practice-area category at some depth or an
+      individual service. Carries match_confidence (curated | name_fallback) and the keywords that fired.
+    key_fields: [kind, id, level, slug, name, match_confidence, matched_keywords, parent_chain]
+  - name: ServiceSearchItem
+    schema: ServiceSearchItem
+    domain: taxonomy
+    description: A category or service in the published taxonomy, with its display name and href.
+    key_fields: [id, type, displayName, href, categoryName]
+  - name: ErrorEnvelope
+    schema: ErrorEnvelope
+    domain: protocol
+    description: The single error shape for the whole API.
+    key_fields: [error.code, error.message, error.field, error.constraint]
+taxonomy:
+  shape: tree
+  depth: 'level 1 = top-level practice area; 2/3 = sub-areas; 4+ = services (one level deeper than their parent category)'
+  scale: 400+ legal practice areas across 3 category levels (per llms.txt)
+  ancestry: >-
+    parent_chain is child-first (closest parent first, root last), so a caller can cite the broader
+    practice area without a second request. The matcher narrows ancestors when a descendant matches.
+relationships:
+  - {from: Specialist, to: Company, kind: belongs_to, via: company, cardinality: 0..1}
+  - {from: Specialist, to: ProfessionalOrg, kind: has_many, via: professional_orgs, cardinality: 0..n}
+  - {from: Specialist, to: Contact, kind: has_one, via: contact, cardinality: 1, note: fields null unless opted in}
+  - {from: Specialist, to: MatchedCategory, kind: has_many, via: matched_categories, cardinality: 0..n, note: 'reference by category slug, not id'}
+  - {from: MatchedCategory, to: MatchedCategory, kind: has_many, via: parent_chain, cardinality: 0..n, note: self-referencing ancestry, child-first order}
+  - {from: AskResponse, to: MatchedCategory, kind: has_many, via: matched_categories}
+  - {from: AskResponse, to: Specialist, kind: has_many, via: specialists, note: ordered by internal merit ranking}
+  - {from: ClassifyResponse, to: MatchedCategory, kind: has_many, via: matched_categories}
+join_keys:
+  - >-
+    Specialist.matched_categories is an array of category SLUGS while MatchedCategory carries both
+    `slug` and a UUID `id` — the join between a specialist and the taxonomy is by slug, not by id.
+  - >-
+    revealSpecialistContact takes the specialist UUID `id` (not the slug) and, despite the path name,
+    also accepts COMPANY-role ids because contact info for both lives on the same profiles row.

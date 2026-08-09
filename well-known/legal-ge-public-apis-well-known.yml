@@ -1,0 +1,58 @@
+generated: '2026-08-09'
+method: probed
+source: live GET of the /.well-known/ discovery surface on https://legal.ge
+host: https://legal.ge
+summary: >-
+  legal.ge publishes no RFC 8615 /.well-known/ documents. Every canonical path returns 404 with an
+  HTML body (the Next.js app 404 page). The provider's machine-readable discovery instead lives at
+  two non-well-known root paths that DO resolve: /apis.json (an APIs.json 0.19 index of both public
+  APIs) and /llms.txt (the agent contract). Both are recorded below and saved in this repo.
+documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /.well-known/mcp.json
+    status: 404
+  - path: /.well-known/llms.txt
+    status: 404
+root_discovery:
+  - path: /apis.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    format: APIs.json 0.19
+    file: legal-ge-public-apis-apis.json
+    note: >-
+      Self-published APIs.json index listing both the legal.ge Public API and the legal.ge MCP Server,
+      with OpenAPI, Documentation and TermsOfService properties on each.
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    file: ../llms/legal-ge-public-apis-llms.txt
+  - path: /api/openapi.json
+    status: 200
+    content_type: application/json
+    file: ../openapi/_original/legal-ge-public-apis-openapi.json
+  - path: /robots.txt
+    status: 200
+    note: >-
+      Explicitly names and Allows GPTBot, ChatGPT-User, OAI-SearchBot, Google-Extended, Claude-Web,
+      anthropic-ai, PerplexityBot, Applebot-Extended, Meta-ExternalAgent, Amazonbot and CCBot on the
+      public API paths (/api/ask, /api/ask/*, /api/openapi.json, /api/service-search,
+      /api/specialists/search) while Disallowing the rest of /api/*. Bytespider is fully disallowed.
+x-evidence:
+  fetched: '2026-08-09'
+  probed_paths: 10
+  hits: 0

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.infolegalge/legal-ge",
+  "description": "Find verified legal specialists in Georgia from natural-language queries. Trilingual (ka/en/ru).",
+  "repository": {
+    "url": "https://github.com/infolegalge/legal.ge-mcp",
+    "source": "github"
+  },
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@legalge/mcp",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "LEGALGE_BASE_URL",
+          "description": "Override the legal.ge API base URL (e.g. for staging). Defaults to https://legal.ge.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

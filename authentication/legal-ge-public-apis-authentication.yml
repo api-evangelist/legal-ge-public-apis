@@ -1,0 +1,42 @@
+generated: '2026-08-09'
+method: searched
+source: https://legal.ge/llms.txt + openapi/legal-ge-public-apis-openapi.yml
+docs: https://legal.ge/llms.txt
+summary:
+  types: [none]
+  keyless: true
+  api_key_in: []
+  oauth2_flows: []
+  note: >-
+    The OpenAPI 3.1 document declares NO components.securitySchemes and no global or per-operation
+    `security` requirement. This is not a thin spec — the API is genuinely public and keyless by
+    design, documented as such in llms.txt and in the MCP server README ("No keys required. The
+    legal.ge Ask API is public; rate-limited per IP.").
+schemes: []
+access_control:
+  model: anonymous-public-read
+  gate: per-IP rate limiting only
+  sources:
+    - openapi/legal-ge-public-apis-openapi.yml
+    - https://legal.ge/llms.txt
+    - https://github.com/infolegalge/legal.ge-mcp
+privileged_surface:
+  description: >-
+    The one PII-bearing operation, GET /api/specialists/{id}/contact, is not protected by a
+    credential either — it is protected by CONSENT plus throttling: the field is returned only when
+    the profile set info_activate=true and is in a public compliance state, and the endpoint is
+    capped at 10 requests/minute per IP explicitly "to make bulk PII harvest impractical".
+  operationId: revealSpecialistContact
+what_requires_sign_in:
+  - Sending an inquiry or message to a specialist (interactive sign-in on legal.ge; not exposed via API).
+  - Dashboards (specialist, company, client, trainer, author, litigation cabinet) — all Disallowed in robots.txt.
+oauth_discovery:
+  '/.well-known/openid-configuration': 404
+  '/.well-known/oauth-authorization-server': 404
+scopes:
+  applicable: false
+  note: No OAuth surface, therefore no scope model. scopes/ is intentionally not emitted.
+x-evidence:
+  fetched: '2026-08-09'
+  url: https://legal.ge/api/openapi.json
+  http_status: 200

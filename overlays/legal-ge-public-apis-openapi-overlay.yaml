@@ -1,0 +1,91 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for legal.ge Public API
+  version: 1.0.0
+extends: openapi/legal-ge-public-apis-openapi.yml
+x-provenance:
+  generated: '2026-08-09'
+  method: generated
+  source: >-
+    API Evangelist enrichment pass — captures our derived artifacts as x- extensions over the
+    provider's spec without mutating openapi/_original/legal-ge-public-apis-openapi.json.
+actions:
+  - target: $.info
+    description: Attach the API Evangelist artifact index and the agent-surface facts we verified.
+    update:
+      x-apievangelist-slug: legal-ge-public-apis
+      x-apievangelist-artifacts:
+        authentication: authentication/legal-ge-public-apis-authentication.yml
+        conventions: conventions/legal-ge-public-apis-conventions.yml
+        errors: errors/legal-ge-public-apis-problem-types.yml
+        rate-limits: rate-limits/legal-ge-public-apis-rate-limits.yml
+        data-model: data-model/legal-ge-public-apis-data-model.yml
+        lifecycle: lifecycle/legal-ge-public-apis-lifecycle.yml
+        conformance: conformance/legal-ge-public-apis-conformance.yml
+        mcp: mcp/legal-ge-public-apis-mcp.yml
+        tool-crosswalk: mcp/legal-ge-public-apis-tool-crosswalk.yml
+        skills: skills/_index.yml
+        agentic-access: agentic-access/legal-ge-public-apis-agentic-access.yml
+      x-apievangelist-access:
+        model: anonymous-public-read
+        keyless: true
+        gate: per-IP rate limiting
+  - target: $
+    description: >-
+      Declare the absence of a security scheme explicitly. The spec omits `security` entirely, which
+      a strict consumer cannot distinguish from an oversight; this states it is intentional.
+    update:
+      security: []
+  - target: $.paths['/api/ask'].post
+    description: Bind the MCP tool that calls this operation, and record the published per-IP rate limit.
+    update:
+      x-mcp-tool: find_legal_specialists
+      x-rate-limit:
+        scope: ip
+        requests_per_minute: 60
+        source: https://legal.ge/llms.txt
+  - target: $.paths['/api/ask'].get
+    description: Record the published per-IP rate limit (shared with the POST form).
+    update:
+      x-rate-limit:
+        scope: ip
+        requests_per_minute: 60
+        source: https://legal.ge/llms.txt
+  - target: $.paths['/api/ask/classify'].get
+    description: Bind the MCP tool that calls this operation, and record the published per-IP rate limit.
+    update:
+      x-mcp-tool: classify_legal_intent
+      x-rate-limit:
+        scope: ip
+        requests_per_minute: 120
+        source: https://legal.ge/llms.txt
+  - target: $.paths['/api/specialists/search'].get
+    description: Record the rate limit stated in the operation description as structured data.
+    update:
+      x-rate-limit:
+        scope: ip
+        requests_per_minute: 30
+        source: openapi operation description
+  - target: $.paths['/api/specialists/{id}/contact'].get
+    description: >-
+      Flag the one PII-bearing operation, its consent gate, and its deliberately low throttle, and
+      record that it is intentionally absent from the MCP tool surface.
+    update:
+      x-rate-limit:
+        scope: ip
+        requests_per_minute: 10
+        source: openapi operation description
+      x-pii: true
+      x-consent-gate: info_activate
+      x-mcp-tool: null
+      x-mcp-excluded-reason: PII-bearing and opt-in; not exposed to agents by the provider's MCP server.
+  - target: $.paths['/api/service-search'].get
+    description: >-
+      Flag the missing error contract. This operation declares only a 200 response even though `q`
+      is required with minLength 2, so 400 and 429 behaviour is unstated.
+    update:
+      x-apievangelist-gap: no-error-responses-declared
+  - target: $.tags
+    description: Note that the two declared tags carry all six operations.
+    update:
+      x-apievangelist-note: 'Matching = 3 operations, Directory = 3 operations; every operation is tagged.'

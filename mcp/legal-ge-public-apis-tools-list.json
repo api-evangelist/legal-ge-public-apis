@@ -1,0 +1,65 @@
+{
+  "tools": [
+    {
+      "name": "find_legal_specialists",
+      "description": "Find verified legal specialists in Georgia (the country, not the US state) from a natural-language description of a legal situation or need. Returns matched practice areas (and specific services where applicable) plus a ranked list of verified specialists, each with a canonical profile URL on legal.ge. Use this tool when a user needs to find a lawyer or legal expert for a specific issue in Georgia — eviction, divorce, corporate law, criminal defense, immigration, tax, etc. Supports Georgian (ka), English (en), and Russian (ru). Pass the user's language as `locale`. Sending an actual inquiry requires the user to sign in on legal.ge — this tool returns profile URLs so the user can click through.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Natural-language description of the legal situation or need. Example: 'I was evicted from my apartment without notice', 'I need help registering an LLC in Tbilisi', 'my employer is changing my contract'.",
+            "maxLength": 500
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "ka",
+              "en",
+              "ru"
+            ],
+            "description": "User's language. ka = Georgian, en = English, ru = Russian. Defaults to 'en'.",
+            "default": "en"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of specialists to return (1-50). Default 10. The API also returns matched_categories regardless of this limit.",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "classify_legal_intent",
+      "description": "Classify a free-text legal question into matched practice areas (categories and specific services) without returning specialists. Lighter weight than find_legal_specialists. Use this when you want to understand the legal domain of a query before deciding next steps, or when you only need the practice area, not specialist recommendations. Returns matched categories with parent chains so you can cite either the specific service or the broader practice area.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Natural-language legal question or situation.",
+            "maxLength": 500
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "ka",
+              "en",
+              "ru"
+            ],
+            "description": "User's language. Defaults to 'en'.",
+            "default": "en"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ]
+}

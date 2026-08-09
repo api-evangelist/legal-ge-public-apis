@@ -1,0 +1,94 @@
+generated: '2026-08-09'
+method: searched
+source: https://legal.ge/llms.txt + openapi/legal-ge-public-apis-openapi.yml
+summary: >-
+  Cross-cutting request/response semantics for the legal.ge Public API, captured from the published
+  llms.txt agent contract and the OpenAPI 3.1 spec. This is a small, keyless, strictly read-only
+  API: no authentication, no pagination cursors, no idempotency contract (there is nothing to make
+  idempotent — every operation is a GET or a side-effect-free POST search).
+authentication:
+  style: none
+  keyless: true
+  notes: >-
+    No securitySchemes are declared in the OpenAPI and none are documented. Access is gated only by
+    per-IP rate limits. Sending an inquiry to a specialist requires an interactive sign-in on
+    legal.ge and is intentionally not exposed through the API.
+  see: authentication/legal-ge-public-apis-authentication.yml
+idempotency:
+  documented: false
+  applicable: false
+  notes: >-
+    No Idempotency-Key header or equivalent is documented, and none is needed: the API is read-only.
+    POST /api/ask is a search that creates no resource, so retrying it is inherently safe.
+pagination:
+  style: none
+  notes: >-
+    /api/ask accepts a `limit` (1-50, default 20) and returns meta.total / meta.returned, but there
+    is no cursor, offset or page parameter — a caller cannot page past the limit.
+    /api/specialists/search returns up to 20 results with no paging parameter at all.
+  params: [limit]
+  response_fields: [meta.total, meta.returned, meta.fallback_used, meta.took_ms]
+localization:
+  param: locale
+  values: [ka, en, ru]
+  spec_default: ka
+  mcp_default: en
+  notes: >-
+    Trilingual by design — keywords, services and specialist bios are translated. Profile URLs
+    returned in `profile_url` are canonical and locale-prefixed (/ka/, /en/, /ru/).
+field_selection:
+  supported: false
+metadata:
+  supported: false
+request_tracing:
+  request_id_header: null
+  documented: false
+versioning:
+  scheme: none-in-path
+  current: 1.0.0
+  notes: >-
+    The API is unversioned on the wire — no /v1 prefix and no version header. The only version
+    signal is info.version in the OpenAPI document.
+  see: lifecycle/legal-ge-public-apis-lifecycle.yml
+error_envelope:
+  shape: custom
+  rfc9457: false
+  media_type: application/json
+  example: '{"error": {"code": "QUERY_TOO_LONG", "message": "query exceeds 500 characters", "field": "query", "constraint": {"max_length": 500}, "received_length": 712}}'
+  fields:
+    - {name: error.code, description: 'Machine-readable, stable across versions.'}
+    - {name: error.message, description: 'Human-readable, safe to surface to end users.'}
+    - {name: error.field, description: 'Offending request field, when field-scoped.'}
+    - {name: error.constraint, description: 'Machine-readable constraint that failed; shape depends on code.'}
+  see: errors/legal-ge-public-apis-problem-types.yml
+rate_limit_signaling:
+  status: 429
+  headers: [Retry-After]
+  body_field: error.constraint.retry_after_seconds
+  notes: >-
+    429 responses carry both a Retry-After header (seconds) and a structured payload with
+    error.code = "RATE_LIMITED". No X-RateLimit-Limit / -Remaining / -Reset headers are documented.
+  see: rate-limits/legal-ge-public-apis-rate-limits.yml
+agent_conventions:
+  citation_fields: [full_name, profile_url, company.name, matched_categories, professional_orgs]
+  ranking:
+    exposed: false
+    surfaceable_field: ranking_note
+    notes: >-
+      Ordering blends category match strength with internal quality and verification signals; exact
+      inputs are intentionally not exposed. The `ranking_note` string is safe to show end users.
+  trust_contract:
+    - Every specialist returned has verification_status='verified'.
+    - contact.email and contact.phone are populated only when the specialist opted in; otherwise null.
+    - Anonymous inquiry submission is not possible — agents must return profile URLs for click-through.
+  robots_policy: >-
+    robots.txt names eleven AI crawler user-agents (GPTBot, ChatGPT-User, OAI-SearchBot,
+    Google-Extended, Claude-Web, anthropic-ai, PerplexityBot, Applebot-Extended,
+    Meta-ExternalAgent, Amazonbot, CCBot) and Allows them on the public API paths while
+    Disallowing the rest of /api/*. Bytespider is fully disallowed.
+cross_links:
+  authentication: authentication/legal-ge-public-apis-authentication.yml
+  errors: errors/legal-ge-public-apis-problem-types.yml
+  lifecycle: lifecycle/legal-ge-public-apis-lifecycle.yml
+  rate_limits: rate-limits/legal-ge-public-apis-rate-limits.yml
+  mcp: mcp/legal-ge-public-apis-mcp.yml

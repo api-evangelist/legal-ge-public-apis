@@ -1,0 +1,63 @@
+generated: '2026-08-09'
+method: derived
+source: openapi/legal-ge-public-apis-openapi.yml (components.responses + ErrorEnvelope schema)
+docs: https://legal.ge/llms.txt
+format: custom-error-envelope
+rfc9457: false
+envelope:
+  media_type: application/json
+  shape: '{"error": {"code": "...", "message": "...", "field": "...", "constraint": {...}}}'
+  required: [error.code, error.message]
+  note: >-
+    legal.ge does NOT use RFC 9457 application/problem+json. It ships its own stable envelope with a
+    machine-readable `code`, a human-readable `message`, an optional offending `field`, and a
+    machine-readable `constraint` object whose shape depends on the code.
+problems:
+  - code: QUERY_REQUIRED
+    status: 400
+    title: Query is required
+    field: query
+    constraint: '{required: true}'
+    remediation: Supply a non-empty `query` (POST body) or `q` (query string).
+    source_operations: [askMatchSpecialists, askMatchSpecialistsGet, classifyLegalIntent]
+  - code: QUERY_TOO_LONG
+    status: 400
+    title: Query exceeds 500 characters
+    field: query
+    constraint: '{max_length: 500}'
+    extra_field: received_length
+    remediation: >-
+      Truncate the query to 500 characters and retry. The response carries `received_length` so a
+      caller can compute the overflow without guessing.
+    source_operations: [askMatchSpecialists, askMatchSpecialistsGet, classifyLegalIntent]
+  - code: INVALID_BODY
+    status: 400
+    title: Invalid request body
+    remediation: Send a JSON object matching the AskRequest schema.
+    source_operations: [askMatchSpecialists]
+  - code: RATE_LIMITED
+    status: 429
+    title: Too many requests
+    constraint: '{retry_after_seconds: <int>}'
+    headers: [Retry-After]
+    remediation: >-
+      Back off for `Retry-After` seconds (equivalently error.constraint.retry_after_seconds) before
+      retrying. Per-IP limits are 60/min on /api/ask, 120/min on /api/ask/classify, 30/min on
+      /api/specialists/search and 10/min on /api/specialists/{id}/contact.
+    source_operations: [askMatchSpecialists, askMatchSpecialistsGet, classifyLegalIntent, searchSpecialistsByName, revealSpecialistContact]
+undocumented_statuses:
+  - status: 400
+    operationId: revealSpecialistContact
+    description: Invalid id or field parameter. (Declared with a description only — no schema, no code.)
+  - status: 404
+    operationId: revealSpecialistContact
+    description: >-
+      Specialist not found, not opted in, or no value for the requested field. Deliberately
+      indistinguishable — the three cases collapse to one status so opt-out state is not leaked.
+gaps:
+  - >-
+    /api/service-search declares only a 200 response — no 400 and no 429 — even though it takes a
+    required `q` with minLength 2. The error contract for that operation is unstated.
+  - >-
+    The 400/404 responses on revealSpecialistContact carry no schema, so a caller cannot rely on the
+    ErrorEnvelope shape there.
