@@ -1,0 +1,57 @@
+name: legal.ge Public APIs
+description: >-
+  Georgia's legal marketplace exposing a public, keyless, read-only REST API for matching legal situations to verified
+  specialists, plus an OpenAPI 3.1 contract, an llms.txt agent contract, and an installable MCP server. Multilingual
+  (Georgian, English, Russian) directory of lawyers, law firms, accountants, and legal specialists.
+url: https://legal-ge-public-apis.apievangelist.com/apis.yml
+created: '2026-08-09'
+modified: '2026-08-09'
+specificationVersion: '0.21'
+tags:
+  - legal
+  - law
+  - legal-services
+  - directory
+  - georgia
+  - ai-agents
+  - mcp
+  - model-context-protocol
+  - specialists
+  - professional-services
+  - marketplace
+  - multilingual
+apis:
+  - name: legal.ge Ask API
+    description: >-
+      Public, keyless, read-only REST API matching natural-language legal queries to practice areas, services, and a
+      ranked list of verified specialists. Endpoints: POST/GET /api/ask and GET /api/ask/classify. Rate-limited per IP.
+    humanURL: https://legal.ge/llms.txt
+    baseURL: https://legal.ge
+    tags:
+      - legal
+      - law
+      - legal-services
+      - directory
+      - georgia
+      - ai-agents
+      - mcp
+      - model-context-protocol
+      - specialists
+      - professional-services
+      - marketplace
+      - multilingual
+    properties:
+      - type: OpenAPI
+        url: https://legal.ge/api/openapi.json
+      - type: LLMsTxt
+        url: https://legal.ge/llms.txt
+      - type: Documentation
+        url: https://github.com/infolegalge/legal.ge-mcp
+maintainers:
+  - FN: legal.ge
+    url: https://legal.ge
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 90
+  at: '2026-08-09T11:15:19.347Z'
