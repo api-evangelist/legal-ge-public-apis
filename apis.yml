@@ -10,7 +10,7 @@ description: >-
   client. Trilingual across Georgian, English and Russian; every specialist returned is verification-checked, and
   contact details are opt-in only.
 image: https://legal.ge/apple-touch-icon.png
-url: https://legal-ge-public-apis.apievangelist.com/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/legal-ge-public-apis/refs/heads/main/apis.yml
 created: '2026-08-09'
 modified: '2026-08-09'
 specificationVersion: '0.21'
