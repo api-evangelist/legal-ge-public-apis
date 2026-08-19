@@ -1,0 +1,520 @@
+{
+  "item": [
+    {
+      "id": "707f62f8-1a96-49bb-a11b-2371dfe04a0d",
+      "name": "Directory",
+      "description": {
+        "content": "Look up services, practice areas and verified specialists on legal.ge.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b7f03a3e-6eab-4207-bc1f-51d6315d0227",
+          "name": "Search the published service + category taxonomy.",
+          "request": {
+            "name": "Search the published service + category taxonomy.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "service-search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "ka"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b916e62f-3f12-41ba-afff-f442565f4183",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "service-search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"7344eb1d-1e70-0584-0995-e8ce1c92317d\",\n    \"type\": \"category\",\n    \"displayName\": \"string\",\n    \"href\": \"string\",\n    \"categoryName\": \"string\"\n  },\n  {\n    \"id\": \"c2f42eaa-7c8d-cdcd-f061-738e5644b290\",\n    \"type\": \"category\",\n    \"displayName\": \"string\",\n    \"href\": \"string\",\n    \"categoryName\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3ebc229-10ce-4dc3-8e3b-c3b91dc70f21",
+          "name": "Look up specialists by name fragment.",
+          "request": {
+            "name": "Look up specialists by name fragment.",
+            "description": {
+              "content": "Returns up to 20 specialists matching the query. Contact info is not included — use /api/specialists/{id}/contact to reveal phone or email for a specific specialist. Rate-limited at 30 requests/minute per IP.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "specialists",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "ka"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d40171ce-1eda-421d-888b-9832ad79a470",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "specialists",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"f8321566-74a6-03c7-cdd6-f60149fda5ea\",\n    \"full_name\": \"string\",\n    \"avatar_url\": \"string\",\n    \"slug\": \"string\",\n    \"info_activate\": false\n  },\n  {\n    \"id\": \"fb0a8123-5301-ebb0-60cb-918a0fdd18c9\",\n    \"full_name\": \"string\",\n    \"avatar_url\": \"string\",\n    \"slug\": \"string\",\n    \"info_activate\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83694d00-ea93-4fbb-aa70-6dcba9d72c47",
+              "name": "Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "specialists",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the next request is allowed",
+                  "key": "Retry-After",
+                  "value": "6973"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many requests\",\n    \"constraint\": {\n      \"retry_after_seconds\": 42\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "76195bba-8dac-448f-935e-f895891bbd87",
+          "name": "Reveal one contact field (phone or email) for a specialist or company.",
+          "request": {
+            "name": "Reveal one contact field (phone or email) for a specialist or company.",
+            "description": {
+              "content": "Click-to-reveal contact endpoint. Returns the requested field only if the profile has opted in (info_activate=true) and is in a public compliance state. Accepts SPECIALIST, SOLO_SPECIALIST, and COMPANY roles — despite the path name, companies share this endpoint since their contact info lives on the same profiles row. Rate-limited at 10 requests/minute per IP to make bulk PII harvest impractical.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "specialists",
+                ":id",
+                "contact"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "field",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eb128e7c-6405-4e7c-a6c6-daa56111ee4d",
+              "name": "OK — returns only the requested field.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "specialists",
+                    ":id",
+                    "contact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "field",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"phone\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2326df22-d5e0-4f53-bf43-45806a2eb23a",
+              "name": "Invalid id or field parameter.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "specialists",
+                    ":id",
+                    "contact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "field",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2384cea5-28f3-4d1d-825d-4e231553a5ae",
+              "name": "Specialist not found, not opted in, or no value for the requested field.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "specialists",
+                    ":id",
+                    "contact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "field",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5e7cea56-684c-457f-862f-44fb498cbbbb",
+              "name": "Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "specialists",
+                    ":id",
+                    "contact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "field",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the next request is allowed",
+                  "key": "Retry-After",
+                  "value": "6973"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many requests\",\n    \"constraint\": {\n      \"retry_after_seconds\": 42\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://legal.ge",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "beb229e8-7472-462b-bdca-21eef44b2eaa",
+    "name": "legal.ge Public Directory API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here.\n\nContact Support:\n Name: legal.ge\n Email: contact@legal.ge",
+      "type": "text/plain"
+    }
+  }
+}

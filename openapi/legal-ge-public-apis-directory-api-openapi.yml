@@ -1,0 +1,225 @@
+openapi: 3.2.0
+info:
+  title: legal.ge Public Directory API
+  version: 1.0.0
+  summary: Find verified legal specialists in Georgia (the country) from natural-language queries.
+  description: Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here.
+  contact:
+    name: legal.ge
+    url: https://legal.ge
+    email: contact@legal.ge
+  license:
+    name: API access — no licence required for read-only use
+    url: https://legal.ge/terms
+  termsOfService: https://legal.ge/terms
+  x-logo:
+    url: https://legal.ge/apple-touch-icon.png
+    altText: legal.ge
+    backgroundColor: '#1B2233'
+  x-mcp-server:
+    npm: '@legalge/mcp'
+    repository: https://github.com/infolegalge/legal.ge-mcp
+    registry: https://www.npmjs.com/package/@legalge/mcp
+  x-llms-txt: https://legal.ge/llms.txt
+servers:
+- url: https://legal.ge
+tags:
+- name: Directory
+  description: Look up services, practice areas and verified specialists on legal.ge.
+paths:
+  /api/service-search:
+    get:
+      operationId: searchServicesAndCategories
+      tags:
+      - Directory
+      summary: Search the published service + category taxonomy.
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 2
+      - name: locale
+        in: query
+        schema:
+          type: string
+          enum:
+          - ka
+          - en
+          - ru
+          default: ka
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceSearchItem'
+  /api/specialists/search:
+    get:
+      operationId: searchSpecialistsByName
+      tags:
+      - Directory
+      summary: Look up specialists by name fragment.
+      description: Returns up to 20 specialists matching the query. Contact info is not included — use /api/specialists/{id}/contact to reveal phone or email for a specific specialist. Rate-limited at 30 requests/minute per IP.
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 3
+      - name: locale
+        in: query
+        schema:
+          type: string
+          enum:
+          - ka
+          - en
+          - ru
+          default: ka
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SpecialistNameResult'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /api/specialists/{id}/contact:
+    get:
+      operationId: revealSpecialistContact
+      tags:
+      - Directory
+      summary: Reveal one contact field (phone or email) for a specialist or company.
+      description: Click-to-reveal contact endpoint. Returns the requested field only if the profile has opted in (info_activate=true) and is in a public compliance state. Accepts SPECIALIST, SOLO_SPECIALIST, and COMPANY roles — despite the path name, companies share this endpoint since their contact info lives on the same profiles row. Rate-limited at 10 requests/minute per IP to make bulk PII harvest impractical.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: field
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - phone
+          - email
+      responses:
+        '200':
+          description: OK — returns only the requested field.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    phone:
+                      type: string
+                  required:
+                  - phone
+                - type: object
+                  properties:
+                    email:
+                      type: string
+                  required:
+                  - email
+        '400':
+          description: Invalid id or field parameter.
+        '404':
+          description: Specialist not found, not opted in, or no value for the requested field.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  schemas:
+    SpecialistNameResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        full_name:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          nullable: true
+        info_activate:
+          type: boolean
+          description: True if the specialist has opted in to public contact CTAs. Use /api/specialists/{id}/contact to retrieve phone or email.
+    ServiceSearchItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+          - category
+          - service
+        displayName:
+          type: string
+        href:
+          type: string
+        categoryName:
+          type: string
+          nullable: true
+    ErrorEnvelope:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: 'Machine-readable error code. Stable across versions. Known values: QUERY_REQUIRED, QUERY_TOO_LONG, INVALID_BODY, RATE_LIMITED.'
+            message:
+              type: string
+              description: Human-readable explanation suitable for surfacing to end users.
+            field:
+              type: string
+              description: Name of the offending request field, when the error is field-scoped.
+            constraint:
+              type: object
+              additionalProperties: true
+              description: 'Machine-readable constraint that failed. Shape depends on `code`: `{required: true}`, `{max_length: 500}`, `{retry_after_seconds: 42}`, etc.'
+            received_length:
+              type: integer
+              description: 'For QUERY_TOO_LONG: the actual length of the rejected query, so the caller can truncate and retry.'
+  responses:
+    RateLimited:
+      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until the next request is allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            rateLimited:
+              value:
+                error:
+                  code: RATE_LIMITED
+                  message: Too many requests
+                  constraint:
+                    retry_after_seconds: 42

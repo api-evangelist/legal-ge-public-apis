@@ -1,0 +1,20 @@
+{
+  "provider": "legal-ge-public-apis",
+  "sources": [
+    "legal-ge-public-apis-directory-api-openapi.yml",
+    "legal-ge-public-apis-matching-api-openapi.yml"
+  ],
+  "outputs": [
+    "legal-ge-public-apis-directory-api-openapi.yml",
+    "legal-ge-public-apis-matching-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "legal-ge-public-apis-directory-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "legal-ge-public-apis-matching-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

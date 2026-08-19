@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "legal.ge Public Directory API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Directory",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search the published service + category taxonomy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://legal.ge/api/service-search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search the published service + category taxonomy."
+        },
+        {
+          "info": {
+            "name": "Look up specialists by name fragment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://legal.ge/api/specialists/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns up to 20 specialists matching the query. Contact info is not included — use /api/specialists/{id}/contact to reveal phone or email for a specific specialist. Rate-limited at 30 requests/minute per IP."
+        },
+        {
+          "info": {
+            "name": "Reveal one contact field (phone or email) for a specialist or company.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://legal.ge/api/specialists/:id/contact",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "field",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Click-to-reveal contact endpoint. Returns the requested field only if the profile has opted in (info_activate=true) and is in a public compliance state. Accepts SPECIALIST, SOLO_SPECIALIST, and COMPANY roles — despite the path name, companies share this endpoint since their contact info lives on the same profiles row. Rate-limited at 10 requests/minute per IP to make bulk PII harvest impractical."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

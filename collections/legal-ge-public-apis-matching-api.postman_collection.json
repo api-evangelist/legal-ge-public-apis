@@ -1,0 +1,615 @@
+{
+  "item": [
+    {
+      "id": "e19d6c12-e198-49ee-b39f-747f7f906719",
+      "name": "Matching",
+      "description": {
+        "content": "Map a free-text legal question to practice areas, and optionally to ranked verified specialists.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bc95720d-9488-4df2-a981-aef08a09f028",
+          "name": "Classify a free-text legal question and return matching verified specialists.",
+          "request": {
+            "name": "Classify a free-text legal question and return matching verified specialists.",
+            "description": {
+              "content": "Pass a natural-language description of the user's legal need (Georgian, English, or Russian). The endpoint maps the text to legal practice areas and returns ranked specialists who work in those areas, including a profile URL for each.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "ask"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"locale\": \"ka\",\n  \"limit\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "17292067-6e09-4487-97ee-584f9e151015",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"I need LLC registration in Tbilisi\",\n  \"locale\": \"en\",\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"query\": \"string\",\n  \"locale\": \"en\",\n  \"matched_categories\": [\n    {\n      \"kind\": \"category\",\n      \"id\": \"d6b50323-c33e-0f2a-6d3d-0b2c946cf838\",\n      \"level\": 4982,\n      \"slug\": \"string\",\n      \"name\": \"string\",\n      \"match_confidence\": \"name_fallback\",\n      \"matched_keywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"parent_chain\": [\n        {\n          \"kind\": \"category\",\n          \"id\": \"0751f281-e04b-59ad-9aee-2a66f495da6e\",\n          \"level\": 1180,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        },\n        {\n          \"kind\": \"service\",\n          \"id\": \"4d780b29-6b1f-3526-1f36-f176c0f4056b\",\n          \"level\": 9600,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        }\n      ]\n    },\n    {\n      \"kind\": \"category\",\n      \"id\": \"e270f4d5-1999-8235-0120-102b52a5d26d\",\n      \"level\": 7990,\n      \"slug\": \"string\",\n      \"name\": \"string\",\n      \"match_confidence\": \"curated\",\n      \"matched_keywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"parent_chain\": [\n        {\n          \"kind\": \"service\",\n          \"id\": \"6af89e9d-d348-3662-2646-f1e70f3e3e52\",\n          \"level\": 1981,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        },\n        {\n          \"kind\": \"service\",\n          \"id\": \"dd385b4d-16d5-3151-2add-21944fc6c06c\",\n          \"level\": 6716,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"specialists\": [\n    {\n      \"id\": \"f5e2583e-6c48-4d2e-0029-76af578afe58\",\n      \"slug\": \"string\",\n      \"full_name\": \"string\",\n      \"role_title\": \"string\",\n      \"bio_excerpt\": \"string\",\n      \"avatar_url\": \"string\",\n      \"profile_url\": \"http://cIFzPnVtr.vcoYGVPeBytUYdFKxemupSouwyvBjO..R\",\n      \"company\": {\n        \"id\": \"1fc32def-f041-5de6-a78d-124ae06ec60c\",\n        \"name\": \"string\",\n        \"slug\": \"string\"\n      },\n      \"professional_org\": \"string\",\n      \"professional_orgs\": [\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        },\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        }\n      ],\n      \"matched_categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"contact\": {\n        \"email\": \"string\",\n        \"phone\": \"string\"\n      }\n    },\n    {\n      \"id\": \"5a124203-69d7-ca3a-e53a-63ede22f5b98\",\n      \"slug\": \"string\",\n      \"full_name\": \"string\",\n      \"role_title\": \"string\",\n      \"bio_excerpt\": \"string\",\n      \"avatar_url\": \"string\",\n      \"profile_url\": \"http://SQcMhtWLxaNWPHtvOpbvL.gorrIxmoc7IQQlA016renzday+3\",\n      \"company\": {\n        \"id\": \"f00e9d9b-5b7d-3c23-954d-8669f6333359\",\n        \"name\": \"string\",\n        \"slug\": \"string\"\n      },\n      \"professional_org\": \"string\",\n      \"professional_orgs\": [\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        },\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        }\n      ],\n      \"matched_categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"contact\": {\n        \"email\": \"string\",\n        \"phone\": \"string\"\n      }\n    }\n  ],\n  \"ranking_note\": \"string\",\n  \"meta\": {\n    \"total\": 3958,\n    \"returned\": 3572,\n    \"fallback_used\": true,\n    \"took_ms\": 6904\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1dd8a16a-906d-411b-b2c0-4f523553f463",
+              "name": "Invalid request. The `error.code` field is machine-readable; possible values: `QUERY_REQUIRED`, `QUERY_TOO_LONG`, `INVALID_BODY`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"I need LLC registration in Tbilisi\",\n  \"locale\": \"en\",\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"QUERY_REQUIRED\",\n    \"message\": \"query is required\",\n    \"field\": \"query\",\n    \"constraint\": {\n      \"required\": true\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a257960c-9258-4be1-a332-192dbac8ab6d",
+              "name": "Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"I need LLC registration in Tbilisi\",\n  \"locale\": \"en\",\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the next request is allowed",
+                  "key": "Retry-After",
+                  "value": "9555"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many requests\",\n    \"constraint\": {\n      \"retry_after_seconds\": 42\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "18e73cff-ed40-4618-9271-a021777fd98c",
+          "name": "Same as POST /api/ask but with query parameters.",
+          "request": {
+            "name": "Same as POST /api/ask but with query parameters.",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "ask"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "ka"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a7efe42a-d560-4361-81d0-593e5010b2fd",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"query\": \"string\",\n  \"locale\": \"ka\",\n  \"matched_categories\": [\n    {\n      \"kind\": \"service\",\n      \"id\": \"6721442b-6fe3-95a5-fe85-98e097cbb7c8\",\n      \"level\": 7215,\n      \"slug\": \"string\",\n      \"name\": \"string\",\n      \"match_confidence\": \"curated\",\n      \"matched_keywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"parent_chain\": [\n        {\n          \"kind\": \"category\",\n          \"id\": \"4048592b-af3b-cbc6-174c-725af76301cf\",\n          \"level\": 9876,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        },\n        {\n          \"kind\": \"service\",\n          \"id\": \"daaaa922-85fc-12d5-2f05-abf80c24dc94\",\n          \"level\": 5912,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        }\n      ]\n    },\n    {\n      \"kind\": \"service\",\n      \"id\": \"9995725d-653e-20c4-22b2-bd57f50c9272\",\n      \"level\": 7124,\n      \"slug\": \"string\",\n      \"name\": \"string\",\n      \"match_confidence\": \"curated\",\n      \"matched_keywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"parent_chain\": [\n        {\n          \"kind\": \"service\",\n          \"id\": \"1f659a41-9a82-4e7e-3c28-bcd1b8c3170b\",\n          \"level\": 2233,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        },\n        {\n          \"kind\": \"service\",\n          \"id\": \"fb00154a-02bc-0480-4f39-59d7069a92c8\",\n          \"level\": 944,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"specialists\": [\n    {\n      \"id\": \"7ad307cc-d5cf-0139-1826-277b381d24a0\",\n      \"slug\": \"string\",\n      \"full_name\": \"string\",\n      \"role_title\": \"string\",\n      \"bio_excerpt\": \"string\",\n      \"avatar_url\": \"string\",\n      \"profile_url\": \"http://LjoPurkWYbAQnHumyXPFbv.aaXRxZcKQNoqk4KL1kGJ2EFzyVrT+CS+u4-Ef5sxjfmq3EJm,G0KomISIUZSgKDWFZ,AKe,\",\n      \"company\": {\n        \"id\": \"743899ff-d32d-6e36-fb8a-06c6570352ea\",\n        \"name\": \"string\",\n        \"slug\": \"string\"\n      },\n      \"professional_org\": \"string\",\n      \"professional_orgs\": [\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        },\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        }\n      ],\n      \"matched_categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"contact\": {\n        \"email\": \"string\",\n        \"phone\": \"string\"\n      }\n    },\n    {\n      \"id\": \"a81b64d7-0be5-6669-85a8-a319ee5078d0\",\n      \"slug\": \"string\",\n      \"full_name\": \"string\",\n      \"role_title\": \"string\",\n      \"bio_excerpt\": \"string\",\n      \"avatar_url\": \"string\",\n      \"profile_url\": \"http://iyVkDKyoDDaevbuzSmIXRaE.xyjUdZK5TdNgUqvHvNrEq5LNZnAj9jxNjECYAwz.2,vyXB2h7Bs9Ai,2X\",\n      \"company\": {\n        \"id\": \"c93d096d-9473-1fc2-b63c-b64fcc74907b\",\n        \"name\": \"string\",\n        \"slug\": \"string\"\n      },\n      \"professional_org\": \"string\",\n      \"professional_orgs\": [\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        },\n        {\n          \"org_id\": \"string\",\n          \"registration_number\": \"string\"\n        }\n      ],\n      \"matched_categories\": [\n        \"string\",\n        \"string\"\n      ],\n      \"contact\": {\n        \"email\": \"string\",\n        \"phone\": \"string\"\n      }\n    }\n  ],\n  \"ranking_note\": \"string\",\n  \"meta\": {\n    \"total\": 2359,\n    \"returned\": 9753,\n    \"fallback_used\": true,\n    \"took_ms\": 3506\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4e3d38cc-31df-4238-be87-5e0c3e0a007d",
+              "name": "Invalid request. The `error.code` field is machine-readable; possible values: `QUERY_REQUIRED`, `QUERY_TOO_LONG`, `INVALID_BODY`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"QUERY_REQUIRED\",\n    \"message\": \"query is required\",\n    \"field\": \"query\",\n    \"constraint\": {\n      \"required\": true\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5a956df-07f0-4b45-89e1-48b66bf89cbf",
+              "name": "Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the next request is allowed",
+                  "key": "Retry-After",
+                  "value": "9555"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many requests\",\n    \"constraint\": {\n      \"retry_after_seconds\": 42\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1fc495b-0840-4e1c-a4c2-693474dc919a",
+          "name": "Classify free text into legal practice areas only.",
+          "request": {
+            "name": "Classify free text into legal practice areas only.",
+            "description": {
+              "content": "Lighter than /api/ask — returns just the matched categories with weighted scores and the keywords that fired. Useful when an agent wants to pick categories first, then query specialists separately.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "ask",
+                "classify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "ka"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1e262f63-b6e7-4181-a8a4-d74e4d5dd1d4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask",
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"query\": \"string\",\n  \"locale\": \"en\",\n  \"matched_categories\": [\n    {\n      \"kind\": \"category\",\n      \"id\": \"9c97cae1-8dcf-30b5-e325-80c8bbefbfa0\",\n      \"level\": 4052,\n      \"slug\": \"string\",\n      \"name\": \"string\",\n      \"match_confidence\": \"name_fallback\",\n      \"matched_keywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"parent_chain\": [\n        {\n          \"kind\": \"service\",\n          \"id\": \"16b01f2b-a50f-3cbf-3236-30687e11e15d\",\n          \"level\": 4459,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        },\n        {\n          \"kind\": \"service\",\n          \"id\": \"6b693526-eb3e-0802-b08c-7a69b7691366\",\n          \"level\": 1449,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        }\n      ]\n    },\n    {\n      \"kind\": \"category\",\n      \"id\": \"8317e27f-1016-5ecf-a031-eecefc5d9d78\",\n      \"level\": 9307,\n      \"slug\": \"string\",\n      \"name\": \"string\",\n      \"match_confidence\": \"name_fallback\",\n      \"matched_keywords\": [\n        \"string\",\n        \"string\"\n      ],\n      \"parent_chain\": [\n        {\n          \"kind\": \"category\",\n          \"id\": \"fa764cac-498a-6a45-caa1-96cb414f91ab\",\n          \"level\": 2791,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        },\n        {\n          \"kind\": \"category\",\n          \"id\": \"2c58909b-74a6-45ce-62c0-b2225e9398bc\",\n          \"level\": 8969,\n          \"slug\": \"string\",\n          \"name\": \"string\"\n        }\n      ]\n    }\n  ],\n  \"meta\": {\n    \"fallback_used\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "702a2ed3-99c5-4997-9419-4ecfb65b71b0",
+              "name": "Invalid request. The `error.code` field is machine-readable; possible values: `QUERY_REQUIRED`, `QUERY_TOO_LONG`, `INVALID_BODY`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask",
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"QUERY_REQUIRED\",\n    \"message\": \"query is required\",\n    \"field\": \"query\",\n    \"constraint\": {\n      \"required\": true\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fff4ba77-077d-4ecf-a8df-28cee0e0f06a",
+              "name": "Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "ask",
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "ka"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Seconds until the next request is allowed",
+                  "key": "Retry-After",
+                  "value": "9555"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"RATE_LIMITED\",\n    \"message\": \"Too many requests\",\n    \"constraint\": {\n      \"retry_after_seconds\": 42\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://legal.ge",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3d6696a6-1430-4b15-a4ec-c6abde44ebc5",
+    "name": "legal.ge Public Matching API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here.\n\nContact Support:\n Name: legal.ge\n Email: contact@legal.ge",
+      "type": "text/plain"
+    }
+  }
+}

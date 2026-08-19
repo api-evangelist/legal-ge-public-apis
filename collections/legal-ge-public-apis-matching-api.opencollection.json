@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "legal.ge Public Matching API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Matching",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Same as POST /api/ask but with query parameters.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://legal.ge/api/ask",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Same as POST /api/ask but with query parameters."
+        },
+        {
+          "info": {
+            "name": "Classify a free-text legal question and return matching verified specialists.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://legal.ge/api/ask",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Pass a natural-language description of the user's legal need (Georgian, English, or Russian). The endpoint maps the text to legal practice areas and returns ranked specialists who work in those areas, including a profile URL for each."
+        },
+        {
+          "info": {
+            "name": "Classify free text into legal practice areas only.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://legal.ge/api/ask/classify",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Lighter than /api/ask — returns just the matched categories with weighted scores and the keywords that fired. Useful when an agent wants to pick categories first, then query specialists separately."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
