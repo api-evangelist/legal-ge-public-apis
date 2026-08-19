@@ -13,7 +13,7 @@ image: https://legal.ge/apple-touch-icon.png
 url: https://raw.githubusercontent.com/api-evangelist/legal-ge-public-apis/refs/heads/main/apis.yml
 created: '2026-08-09'
 modified: '2026-08-09'
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 tags:
   - legal
   - law
