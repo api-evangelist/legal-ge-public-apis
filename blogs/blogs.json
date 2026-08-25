@@ -1,0 +1,14 @@
+{
+  "repo": "legal-ge-public-apis",
+  "feeds": [
+    {
+      "source": "https://legal.ge/en/contact",
+      "feed_url": "https://legal.ge/en/contact",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-22T20:20:02Z"
+}
