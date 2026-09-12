@@ -148,6 +148,8 @@ x-enrichment:
   artifacts_added: 26
   pass: local-v1
 common:
+- type: Website
+  url: https://www.legal.ge/
 - type: DomainSecurity
   url: security/legal-ge-public-apis-domain-security.yml
 - type: AgenticAccess
