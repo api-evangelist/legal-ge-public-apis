@@ -1,8 +1,7 @@
 {
   "provider": "legal-ge-public-apis",
   "sources": [
-    "legal-ge-public-apis-directory-api-openapi.yml",
-    "legal-ge-public-apis-matching-api-openapi.yml"
+    "_original/legal-ge-public-apis-openapi.json"
   ],
   "outputs": [
     "legal-ge-public-apis-directory-api-openapi.yml",
@@ -12,9 +11,14 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "legal-ge-public-apis-directory-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "legal-ge-public-apis-matching-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "legal-ge-public-apis-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/legal-ge-public-apis-openapi.yml: archived document superseded by a larger archived document",
+    "legal-ge-public-apis-directory-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "legal-ge-public-apis-matching-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

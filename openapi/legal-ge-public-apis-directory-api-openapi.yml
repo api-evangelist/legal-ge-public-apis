@@ -32,7 +32,7 @@ paths:
       operationId: searchServicesAndCategories
       tags:
       - Directory
-      summary: Search the published service + category taxonomy.
+      summary: Search the published service + category taxonomy
       parameters:
       - name: q
         in: query
@@ -63,7 +63,7 @@ paths:
       operationId: searchSpecialistsByName
       tags:
       - Directory
-      summary: Look up specialists by name fragment.
+      summary: Look up specialists by name fragment
       description: Returns up to 20 specialists matching the query. Contact info is not included — use /api/specialists/{id}/contact to reveal phone or email for a specific specialist. Rate-limited at 30 requests/minute per IP.
       parameters:
       - name: q
@@ -97,7 +97,7 @@ paths:
       operationId: revealSpecialistContact
       tags:
       - Directory
-      summary: Reveal one contact field (phone or email) for a specialist or company.
+      summary: Reveal one contact field (phone or email) for a specialist or company
       description: Click-to-reveal contact endpoint. Returns the requested field only if the profile has opted in (info_activate=true) and is in a public compliance state. Accepts SPECIALIST, SOLO_SPECIALIST, and COMPANY roles — despite the path name, companies share this endpoint since their contact info lives on the same profiles row. Rate-limited at 10 requests/minute per IP to make bulk PII harvest impractical.
       parameters:
       - name: id
@@ -141,23 +141,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    SpecialistNameResult:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        full_name:
-          type: string
-        avatar_url:
-          type: string
-          nullable: true
-        slug:
-          type: string
-          nullable: true
-        info_activate:
-          type: boolean
-          description: True if the specialist has opted in to public contact CTAs. Use /api/specialists/{id}/contact to retrieve phone or email.
     ServiceSearchItem:
       type: object
       properties:
@@ -176,6 +159,23 @@ components:
         categoryName:
           type: string
           nullable: true
+    SpecialistNameResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        full_name:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          nullable: true
+        info_activate:
+          type: boolean
+          description: True if the specialist has opted in to public contact CTAs. Use /api/specialists/{id}/contact to retrieve phone or email.
     ErrorEnvelope:
       type: object
       required:
