@@ -136,7 +136,7 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    ClassifyResponse:
+    AskResponse:
       type: object
       properties:
         query:
@@ -151,11 +151,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MatchedCategory'
+        specialists:
+          type: array
+          items:
+            $ref: '#/components/schemas/AskSpecialist'
+          description: Specialists ordered by legal.ge internal relevance ranking. The platform combines category match strength with internal quality and verification signals; exact ranking inputs are intentionally not exposed.
+        ranking_note:
+          type: string
+          description: Human-readable explanation of the ordering convention, suitable for surfacing to end users.
         meta:
           type: object
           properties:
+            total:
+              type: integer
+            returned:
+              type: integer
             fallback_used:
               type: boolean
+            took_ms:
+              type: integer
     AskRequest:
       type: object
       required:
@@ -177,6 +191,57 @@ components:
           minimum: 1
           maximum: 50
           default: 20
+    MatchedCategory:
+      type: object
+      description: A node matched by the classifier. Can be a category (any depth) or an individual service.
+      properties:
+        kind:
+          type: string
+          enum:
+          - category
+          - service
+          description: '`category` = a legal practice area at some depth in the taxonomy. `service` = a specific service under a category. Services are the deepest level the matcher considers.'
+        id:
+          type: string
+          format: uuid
+        level:
+          type: integer
+          description: 'Depth in the taxonomy: 1 = top-level practice area, 2/3 = sub-areas, 4+ = services (one level deeper than their parent category). The matcher narrows ancestors when a descendant matches.'
+        slug:
+          type: string
+        name:
+          type: string
+        match_confidence:
+          type: string
+          enum:
+          - curated
+          - name_fallback
+          description: '`curated` = the node was matched via one or more admin-curated keywords (strong signal). `name_fallback` = the matcher only found a token overlap with the node name itself (weaker, used when no curated keyword fired).'
+        matched_keywords:
+          type: array
+          items:
+            type: string
+          description: Keywords from the user query that triggered this match.
+        parent_chain:
+          type: array
+          description: Ancestors of this node, in child-first order (closest parent first, root last). Lets a caller cite the broader practice area without an extra request.
+          items:
+            type: object
+            properties:
+              kind:
+                type: string
+                enum:
+                - category
+                - service
+              id:
+                type: string
+                format: uuid
+              level:
+                type: integer
+              slug:
+                type: string
+              name:
+                type: string
     AskSpecialist:
       type: object
       properties:
@@ -239,6 +304,26 @@ components:
               type: string
               nullable: true
           description: Populated only when the specialist has opted into public contact display. Otherwise both fields are null and the user must sign in to message via legal.ge.
+    ClassifyResponse:
+      type: object
+      properties:
+        query:
+          type: string
+        locale:
+          type: string
+          enum:
+          - ka
+          - en
+          - ru
+        matched_categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchedCategory'
+        meta:
+          type: object
+          properties:
+            fallback_used:
+              type: boolean
     ErrorEnvelope:
       type: object
       required:
@@ -266,92 +351,26 @@ components:
             received_length:
               type: integer
               description: 'For QUERY_TOO_LONG: the actual length of the rejected query, so the caller can truncate and retry.'
-    MatchedCategory:
-      type: object
-      description: A node matched by the classifier. Can be a category (any depth) or an individual service.
-      properties:
-        kind:
-          type: string
-          enum:
-          - category
-          - service
-          description: '`category` = a legal practice area at some depth in the taxonomy. `service` = a specific service under a category. Services are the deepest level the matcher considers.'
-        id:
-          type: string
-          format: uuid
-        level:
-          type: integer
-          description: 'Depth in the taxonomy: 1 = top-level practice area, 2/3 = sub-areas, 4+ = services (one level deeper than their parent category). The matcher narrows ancestors when a descendant matches.'
-        slug:
-          type: string
-        name:
-          type: string
-        match_confidence:
-          type: string
-          enum:
-          - curated
-          - name_fallback
-          description: '`curated` = the node was matched via one or more admin-curated keywords (strong signal). `name_fallback` = the matcher only found a token overlap with the node name itself (weaker, used when no curated keyword fired).'
-        matched_keywords:
-          type: array
-          items:
-            type: string
-          description: Keywords from the user query that triggered this match.
-        parent_chain:
-          type: array
-          description: Ancestors of this node, in child-first order (closest parent first, root last). Lets a caller cite the broader practice area without an extra request.
-          items:
-            type: object
-            properties:
-              kind:
-                type: string
-                enum:
-                - category
-                - service
-              id:
-                type: string
-                format: uuid
-              level:
-                type: integer
-              slug:
-                type: string
-              name:
-                type: string
-    AskResponse:
-      type: object
-      properties:
-        query:
-          type: string
-        locale:
-          type: string
-          enum:
-          - ka
-          - en
-          - ru
-        matched_categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/MatchedCategory'
-        specialists:
-          type: array
-          items:
-            $ref: '#/components/schemas/AskSpecialist'
-          description: Specialists ordered by legal.ge internal relevance ranking. The platform combines category match strength with internal quality and verification signals; exact ranking inputs are intentionally not exposed.
-        ranking_note:
-          type: string
-          description: Human-readable explanation of the ordering convention, suitable for surfacing to end users.
-        meta:
-          type: object
-          properties:
-            total:
-              type: integer
-            returned:
-              type: integer
-            fallback_used:
-              type: boolean
-            took_ms:
-              type: integer
   responses:
+    RateLimited:
+      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until the next request is allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            rateLimited:
+              value:
+                error:
+                  code: RATE_LIMITED
+                  message: Too many requests
+                  constraint:
+                    retry_after_seconds: 42
     BadRequest:
       description: 'Invalid request. The `error.code` field is machine-readable; possible values: `QUERY_REQUIRED`, `QUERY_TOO_LONG`, `INVALID_BODY`.'
       content:
@@ -376,22 +395,3 @@ components:
                   constraint:
                     max_length: 500
                   received_length: 712
-    RateLimited:
-      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Seconds until the next request is allowed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-          examples:
-            rateLimited:
-              value:
-                error:
-                  code: RATE_LIMITED
-                  message: Too many requests
-                  constraint:
-                    retry_after_seconds: 42

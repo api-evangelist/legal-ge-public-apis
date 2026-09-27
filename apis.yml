@@ -72,7 +72,6 @@ apis:
   name: legal.ge Public APIs Directory API
   description: Look up services, practice areas and verified specialists on legal.ge.
   humanURL: https://legal.ge
-  baseURL: https://legal.ge
   tags:
   - Directory
   properties:
@@ -105,7 +104,6 @@ apis:
   description: >-
     Map a free-text legal question to practice areas, and optionally to ranked verified specialists.
   humanURL: https://legal.ge
-  baseURL: https://legal.ge
   tags:
   - Matching
   properties:
