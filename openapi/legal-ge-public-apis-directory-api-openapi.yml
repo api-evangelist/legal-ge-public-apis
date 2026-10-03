@@ -140,6 +140,26 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    RateLimited:
+      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until the next request is allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            rateLimited:
+              value:
+                error:
+                  code: RATE_LIMITED
+                  message: Too many requests
+                  constraint:
+                    retry_after_seconds: 42
   schemas:
     ServiceSearchItem:
       type: object
@@ -203,23 +223,3 @@ components:
             received_length:
               type: integer
               description: 'For QUERY_TOO_LONG: the actual length of the rejected query, so the caller can truncate and retry.'
-  responses:
-    RateLimited:
-      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Seconds until the next request is allowed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-          examples:
-            rateLimited:
-              value:
-                error:
-                  code: RATE_LIMITED
-                  message: Too many requests
-                  constraint:
-                    retry_after_seconds: 42
