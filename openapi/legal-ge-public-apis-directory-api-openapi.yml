@@ -141,6 +141,23 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
+    SpecialistNameResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        full_name:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          nullable: true
+        info_activate:
+          type: boolean
+          description: True if the specialist has opted in to public contact CTAs. Use /api/specialists/{id}/contact to retrieve phone or email.
     ErrorEnvelope:
       type: object
       required:
@@ -186,23 +203,6 @@ components:
         categoryName:
           type: string
           nullable: true
-    SpecialistNameResult:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        full_name:
-          type: string
-        avatar_url:
-          type: string
-          nullable: true
-        slug:
-          type: string
-          nullable: true
-        info_activate:
-          type: boolean
-          description: True if the specialist has opted in to public contact CTAs. Use /api/specialists/{id}/contact to retrieve phone or email.
   responses:
     RateLimited:
       description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
