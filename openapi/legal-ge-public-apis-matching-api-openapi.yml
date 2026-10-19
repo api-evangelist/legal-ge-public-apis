@@ -1,9 +1,9 @@
 openapi: 3.2.0
 info:
   title: legal.ge Public Matching API
-  version: 1.0.0
+  version: 1.2.0
   summary: Find verified legal specialists in Georgia (the country) from natural-language queries.
-  description: Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here.
+  description: Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here. The text of Georgian laws is free to AI agents through /api/law/* (rate-limited; cite the canonical URL and name the official source, matsne, the Legislative Herald of Georgia). A remote MCP endpoint (Streamable HTTP, stateless) at /api/mcp exposes the same tools.
   contact:
     name: legal.ge
     url: https://legal.ge
@@ -61,6 +61,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '429':
           $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/FilterUnavailable'
     get:
       operationId: askMatchSpecialistsGet
       tags:
@@ -89,6 +91,18 @@ paths:
           minimum: 1
           maximum: 50
           default: 20
+      - name: city
+        in: query
+        description: 'Only specialists who work in this city: a slug (`batumi`) or a name in Georgian, English or Russian. Without it, a city named in the question is used.'
+        schema:
+          type: string
+          maxLength: 64
+      - name: language
+        in: query
+        description: 'Only specialists who list this working language: a code (`en`, `ru`, `ka`, `de`, `fr`, `es`, `tr`, `az`, `hy`, `uk`) or its English name. Without it, a language asked for in the question ("English-speaking", "англоязычный", "ინგლისურენოვანი") is used.'
+        schema:
+          type: string
+          maxLength: 64
       responses:
         '200':
           description: OK
@@ -100,6 +114,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '429':
           $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/FilterUnavailable'
   /api/ask/classify:
     get:
       operationId: classifyLegalIntent
@@ -156,6 +172,64 @@ components:
           items:
             $ref: '#/components/schemas/AskSpecialist'
           description: Specialists ordered by legal.ge internal relevance ranking. The platform combines category match strength with internal quality and verification signals; exact ranking inputs are intentionally not exposed.
+        filters:
+          type: object
+          description: 'The filters applied: from the parameters (`source: param`) or read from the query (`source: text`). Words that only name a city, a language or a price are not matched as legal matters.'
+          properties:
+            city:
+              type: object
+              nullable: true
+              properties:
+                slug:
+                  type: string
+                name:
+                  type: string
+                source:
+                  type: string
+                  enum:
+                  - param
+                  - text
+            language:
+              type: object
+              nullable: true
+              properties:
+                code:
+                  type: string
+                source:
+                  type: string
+                  enum:
+                  - param
+                  - text
+            fee_question:
+              type: boolean
+              description: The query asks what a lawyer costs. With no legal matter in it, only specialists who publish a price are returned.
+        fee_facts:
+          type: object
+          nullable: true
+          description: 'For a price question: the consultation fees the listing shows for the specialists in scope (after the city and language filters). Null otherwise.'
+          properties:
+            publishing:
+              type: integer
+              description: Specialists who publish a paid fee
+            min:
+              type: number
+              nullable: true
+            max:
+              type: number
+              nullable: true
+            median:
+              type: number
+              nullable: true
+            free:
+              type: integer
+              description: Specialists whose first consultation is free
+            by_agreement:
+              type: integer
+              description: Specialists who set the price by agreement
+            currency:
+              type: string
+              enum:
+              - GEL
         ranking_note:
           type: string
           description: Human-readable explanation of the ordering convention, suitable for surfacing to end users.
@@ -170,6 +244,57 @@ components:
               type: boolean
             took_ms:
               type: integer
+    MatchedCategory:
+      type: object
+      description: A node matched by the classifier. Can be a category (any depth) or an individual service.
+      properties:
+        kind:
+          type: string
+          enum:
+          - category
+          - service
+          description: '`category` = a legal practice area at some depth in the taxonomy. `service` = a specific service under a category. Services are the deepest level the matcher considers.'
+        id:
+          type: string
+          format: uuid
+        level:
+          type: integer
+          description: 'Depth in the taxonomy: 1 = top-level practice area, 2/3 = sub-areas, 4+ = services (one level deeper than their parent category). The matcher narrows ancestors when a descendant matches.'
+        slug:
+          type: string
+        name:
+          type: string
+        match_confidence:
+          type: string
+          enum:
+          - curated
+          - name_fallback
+          description: '`curated` = the node was matched via one or more admin-curated keywords (strong signal). `name_fallback` = the matcher only found a token overlap with the node name itself (weaker, used when no curated keyword fired).'
+        matched_keywords:
+          type: array
+          items:
+            type: string
+          description: Keywords from the user query that triggered this match.
+        parent_chain:
+          type: array
+          description: Ancestors of this node, in child-first order (closest parent first, root last). Lets a caller cite the broader practice area without an extra request.
+          items:
+            type: object
+            properties:
+              kind:
+                type: string
+                enum:
+                - category
+                - service
+              id:
+                type: string
+                format: uuid
+              level:
+                type: integer
+              slug:
+                type: string
+              name:
+                type: string
     AskRequest:
       type: object
       required:
@@ -191,6 +316,14 @@ components:
           minimum: 1
           maximum: 50
           default: 20
+        city:
+          type: string
+          maxLength: 64
+          description: 'Only specialists who work in this city: a slug or a name in any of the three languages. Without it, a city named in the query is used.'
+        language:
+          type: string
+          maxLength: 64
+          description: 'Only specialists who list this working language: a code (`en`, `ru`, `ka`, ...) or its English name. Without it, a language asked for in the query is used.'
     AskSpecialist:
       type: object
       properties:
@@ -252,7 +385,71 @@ components:
             phone:
               type: string
               nullable: true
-          description: Populated only when the specialist has opted into public contact display. Otherwise both fields are null and the user must sign in to message via legal.ge.
+          description: Masked (for example `n***@gmail.com`, `+995 5XX XX XX XX`) for each channel the specialist publishes; null for a channel they do not. The full contact is revealed on the `profile_url`.
+        languages:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Working languages the listing card shows, as BCP 47 codes. Null when the listing could not be read.
+        cities:
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              slug:
+                type: string
+              name:
+                type: string
+          description: Cities the specialist works in. Null when the listing could not be read.
+        consultation_price:
+          type: object
+          nullable: true
+          description: 'The consultation price the listing card shows: `free`, or a `fee` in GEL (`from` = the lowest of several options), or neither = by agreement. Null when the listing could not be read.'
+          properties:
+            fee:
+              type: number
+              nullable: true
+            free:
+              type: boolean
+            from:
+              type: boolean
+            currency:
+              type: string
+              enum:
+              - GEL
+        bar_register_matched:
+          type: boolean
+          nullable: true
+          description: legal.ge matched this person's name to an entry in the Georgian Bar Association's public register and a person on its team confirmed it. legal.ge's own check, not a statement by the Bar Association. Null when the listing could not be read.
+    ErrorEnvelope:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: 'Machine-readable error code. Stable across versions. Known values: QUERY_REQUIRED, QUERY_TOO_LONG, INVALID_BODY, RATE_LIMITED, FILTER_UNAVAILABLE.'
+            message:
+              type: string
+              description: Human-readable explanation suitable for surfacing to end users.
+            field:
+              type: string
+              description: Name of the offending request field, when the error is field-scoped.
+            constraint:
+              type: object
+              additionalProperties: true
+              description: 'Machine-readable constraint that failed. Shape depends on `code`: `{required: true}`, `{max_length: 500}`, `{retry_after_seconds: 42}`, etc.'
+            received_length:
+              type: integer
+              description: 'For QUERY_TOO_LONG: the actual length of the rejected query, so the caller can truncate and retry.'
     ClassifyResponse:
       type: object
       properties:
@@ -273,84 +470,6 @@ components:
           properties:
             fallback_used:
               type: boolean
-    ErrorEnvelope:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: 'Machine-readable error code. Stable across versions. Known values: QUERY_REQUIRED, QUERY_TOO_LONG, INVALID_BODY, RATE_LIMITED.'
-            message:
-              type: string
-              description: Human-readable explanation suitable for surfacing to end users.
-            field:
-              type: string
-              description: Name of the offending request field, when the error is field-scoped.
-            constraint:
-              type: object
-              additionalProperties: true
-              description: 'Machine-readable constraint that failed. Shape depends on `code`: `{required: true}`, `{max_length: 500}`, `{retry_after_seconds: 42}`, etc.'
-            received_length:
-              type: integer
-              description: 'For QUERY_TOO_LONG: the actual length of the rejected query, so the caller can truncate and retry.'
-    MatchedCategory:
-      type: object
-      description: A node matched by the classifier. Can be a category (any depth) or an individual service.
-      properties:
-        kind:
-          type: string
-          enum:
-          - category
-          - service
-          description: '`category` = a legal practice area at some depth in the taxonomy. `service` = a specific service under a category. Services are the deepest level the matcher considers.'
-        id:
-          type: string
-          format: uuid
-        level:
-          type: integer
-          description: 'Depth in the taxonomy: 1 = top-level practice area, 2/3 = sub-areas, 4+ = services (one level deeper than their parent category). The matcher narrows ancestors when a descendant matches.'
-        slug:
-          type: string
-        name:
-          type: string
-        match_confidence:
-          type: string
-          enum:
-          - curated
-          - name_fallback
-          description: '`curated` = the node was matched via one or more admin-curated keywords (strong signal). `name_fallback` = the matcher only found a token overlap with the node name itself (weaker, used when no curated keyword fired).'
-        matched_keywords:
-          type: array
-          items:
-            type: string
-          description: Keywords from the user query that triggered this match.
-        parent_chain:
-          type: array
-          description: Ancestors of this node, in child-first order (closest parent first, root last). Lets a caller cite the broader practice area without an extra request.
-          items:
-            type: object
-            properties:
-              kind:
-                type: string
-                enum:
-                - category
-                - service
-              id:
-                type: string
-                format: uuid
-              level:
-                type: integer
-              slug:
-                type: string
-              name:
-                type: string
   responses:
     BadRequest:
       description: 'Invalid request. The `error.code` field is machine-readable; possible values: `QUERY_REQUIRED`, `QUERY_TOO_LONG`, `INVALID_BODY`.'
@@ -395,3 +514,20 @@ components:
                   message: Too many requests
                   constraint:
                     retry_after_seconds: 42
+    FilterUnavailable:
+      description: A `city` or `language` filter (from a parameter or the question) could not be applied because the specialist listing could not be read. Never answered with an unfiltered list instead. Retry after `Retry-After` seconds.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            filterUnavailable:
+              value:
+                error:
+                  code: FILTER_UNAVAILABLE
+                  message: the city or language filter cannot be applied right now; retry shortly

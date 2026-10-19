@@ -131,6 +131,15 @@ apis:
     url: https://github.com/infolegalge/legal.ge-mcp
   - type: Packages
     url: https://www.npmjs.com/package/@legalge/mcp
+- aid: legal-ge-public-apis:legal-ge-public-apis-law-api
+  name: legal.ge Public APIs Law API
+  description: The Law API from legal.ge Public APIs — 3 operation(s) for law.
+  humanURL: https://legal.ge
+  tags:
+  - Law
+  properties:
+  - type: OpenAPI
+    url: openapi/legal-ge-public-apis-law-api-openapi.yml
 maintainers:
   - FN: legal.ge
     email: contact@legal.ge

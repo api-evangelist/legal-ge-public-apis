@@ -1,12 +1,12 @@
 {
  "url": "https://legal.ge/api/openapi.json",
- "requested_url": "https://legal.ge/api/openapi.json",
+ "final": "https://legal.ge/api/openapi.json",
  "status": 200,
  "content_type": "application/json",
- "bytes": 13167,
- "sha256": "ee315d6e3c563555030acf19ee048df76e86e57e6ec5f9b94c3416eaeb4e2081",
- "fetched_at": "2026-10-04",
+ "bytes": 23127,
+ "sha256": "060000c9c51b09f3b438b09451514ebd9fdb7c0fe799e7b02d266bce57e72bcc",
+ "fetched_at": "2026-10-19",
  "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
  "match": "byte-identical",
- "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
 }

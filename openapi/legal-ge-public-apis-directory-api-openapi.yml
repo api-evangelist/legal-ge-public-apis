@@ -1,9 +1,9 @@
 openapi: 3.2.0
 info:
   title: legal.ge Public Directory API
-  version: 1.0.0
+  version: 1.2.0
   summary: Find verified legal specialists in Georgia (the country) from natural-language queries.
-  description: Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here.
+  description: Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here. The text of Georgian laws is free to AI agents through /api/law/* (rate-limited; cite the canonical URL and name the official source, matsne, the Legislative Herald of Georgia). A remote MCP endpoint (Streamable HTTP, stateless) at /api/mcp exposes the same tools.
   contact:
     name: legal.ge
     url: https://legal.ge
@@ -140,6 +140,26 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    RateLimited:
+      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until the next request is allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            rateLimited:
+              value:
+                error:
+                  code: RATE_LIMITED
+                  message: Too many requests
+                  constraint:
+                    retry_after_seconds: 42
   schemas:
     SpecialistNameResult:
       type: object
@@ -171,7 +191,7 @@ components:
           properties:
             code:
               type: string
-              description: 'Machine-readable error code. Stable across versions. Known values: QUERY_REQUIRED, QUERY_TOO_LONG, INVALID_BODY, RATE_LIMITED.'
+              description: 'Machine-readable error code. Stable across versions. Known values: QUERY_REQUIRED, QUERY_TOO_LONG, INVALID_BODY, RATE_LIMITED, FILTER_UNAVAILABLE.'
             message:
               type: string
               description: Human-readable explanation suitable for surfacing to end users.
@@ -203,23 +223,3 @@ components:
         categoryName:
           type: string
           nullable: true
-  responses:
-    RateLimited:
-      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Seconds until the next request is allowed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-          examples:
-            rateLimited:
-              value:
-                error:
-                  code: RATE_LIMITED
-                  message: Too many requests
-                  constraint:
-                    retry_after_seconds: 42

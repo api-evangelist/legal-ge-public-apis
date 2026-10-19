@@ -1,0 +1,364 @@
+openapi: 3.2.0
+info:
+  title: legal.ge Public Law API
+  version: 1.2.0
+  summary: Find verified legal specialists in Georgia (the country) from natural-language queries.
+  description: Read-only API for finding verified Georgian legal specialists. Designed for AI agents (Perplexity, ChatGPT, Claude, Custom GPTs, MCP servers) and third-party integrations. Supports Georgian, English, and Russian. Sending an inquiry requires sign-in on legal.ge and is not exposed here. The text of Georgian laws is free to AI agents through /api/law/* (rate-limited; cite the canonical URL and name the official source, matsne, the Legislative Herald of Georgia). A remote MCP endpoint (Streamable HTTP, stateless) at /api/mcp exposes the same tools.
+  contact:
+    name: legal.ge
+    url: https://legal.ge
+    email: contact@legal.ge
+  license:
+    name: API access — no licence required for read-only use
+    url: https://legal.ge/terms
+  termsOfService: https://legal.ge/terms
+  x-logo:
+    url: https://legal.ge/apple-touch-icon.png
+    altText: legal.ge
+    backgroundColor: '#1B2233'
+  x-mcp-server:
+    npm: '@legalge/mcp'
+    repository: https://github.com/infolegalge/legal.ge-mcp
+    registry: https://www.npmjs.com/package/@legalge/mcp
+  x-llms-txt: https://legal.ge/llms.txt
+servers:
+- url: https://legal.ge
+tags:
+- name: Law
+paths:
+  /api/law/search:
+    get:
+      operationId: searchLaw
+      tags:
+      - Law
+      summary: Keyword search over the text of Georgian laws (Georgian words work best)
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 2
+          maxLength: 200
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 25
+          default: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LawSearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /api/law/article:
+    get:
+      operationId: getLawArticle
+      tags:
+      - Law
+      summary: 'One article of a Georgian law: its text, the consolidation it is "as of", and…'
+      description: With `as_of_date`, the wording legal.ge holds for that date. Where legal.ge's copy may be behind, `as_of.held` is false and `as_of.note` says the corpus has not been updated since its last fetch; it never implies the law did not change. Until the corpus exposes its version history, a dated request answers 503 AS_OF_UNAVAILABLE.
+      parameters:
+      - name: law
+        in: query
+        required: true
+        description: The law's matsne document id, as in legal.ge law URLs.
+        schema:
+          type: integer
+      - name: article
+        in: query
+        required: true
+        description: 'The article number: ''5'', or ''118-1'' for 118¹.'
+        schema:
+          type: string
+      - name: as_of_date
+        in: query
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LawArticleResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: No such article in the corpus.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          description: AS_OF_UNAVAILABLE (a dated request before the version history is exposed) or UNAVAILABLE.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /api/law/term:
+    get:
+      operationId: getLawTerm
+      tags:
+      - Law
+      summary: A legal term defined in Georgian legislation, with every definition and the…
+      parameters:
+      - name: slug
+        in: query
+        schema:
+          type: string
+      - name: q
+        in: query
+        description: The term in Georgian, when the slug is unknown.
+        schema:
+          type: string
+          minLength: 2
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LawTermResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: No such term.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  schemas:
+    LawTermResponse:
+      type: object
+      properties:
+        term:
+          type: string
+        slug:
+          type: string
+        url:
+          type: string
+          format: uri
+        definitions:
+          type: array
+          items:
+            type: object
+            properties:
+              definition:
+                type: string
+              law:
+                type: string
+              law_url:
+                type: string
+                format: uri
+              article:
+                type: string
+              article_url:
+                type: string
+                format: uri
+        attribution:
+          type: string
+        official_source:
+          type: string
+    ErrorEnvelope:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: 'Machine-readable error code. Stable across versions. Known values: QUERY_REQUIRED, QUERY_TOO_LONG, INVALID_BODY, RATE_LIMITED, FILTER_UNAVAILABLE.'
+            message:
+              type: string
+              description: Human-readable explanation suitable for surfacing to end users.
+            field:
+              type: string
+              description: Name of the offending request field, when the error is field-scoped.
+            constraint:
+              type: object
+              additionalProperties: true
+              description: 'Machine-readable constraint that failed. Shape depends on `code`: `{required: true}`, `{max_length: 500}`, `{retry_after_seconds: 42}`, etc.'
+            received_length:
+              type: integer
+              description: 'For QUERY_TOO_LONG: the actual length of the rejected query, so the caller can truncate and retry.'
+    LawStatus:
+      type: object
+      properties:
+        consolidated_as_of:
+          type: string
+          format: date
+          nullable: true
+          description: The consolidation the text is "as of"; null for an as-enacted text.
+        legal_force:
+          type: string
+          enum:
+          - in_force
+          - not_in_force
+          description: 'Present only when legal.ge can vouch for it: never for a law whose text is stale, never while freshness is unknown.'
+        newer_consolidation_published:
+          type: boolean
+          description: matsne has published a newer consolidation than the text legal.ge holds.
+        freshness:
+          type: string
+          enum:
+          - current
+          - stale
+          - unknown
+    LawArticleResponse:
+      allOf:
+      - $ref: '#/components/schemas/LawStatus'
+      type: object
+      properties:
+        law:
+          type: object
+          properties:
+            matsne_id:
+              type: integer
+            title:
+              type: string
+            identifier:
+              type: string
+            url:
+              type: string
+              format: uri
+        article:
+          type: object
+          properties:
+            number:
+              type: string
+            title:
+              type: string
+              nullable: true
+            url:
+              type: string
+              format: uri
+            markdown_url:
+              type: string
+              format: uri
+        text:
+          type: string
+        as_of:
+          type: object
+          properties:
+            requested:
+              type: string
+              format: date
+            held:
+              type: boolean
+              description: Whether `text` is the wording legal.ge can vouch for on that date.
+            text_consolidated_as_of:
+              type: string
+              format: date
+              nullable: true
+            note:
+              type: string
+        attribution:
+          type: string
+        official_source:
+          type: string
+    LawSearchResponse:
+      type: object
+      properties:
+        query:
+          type: string
+        results:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/LawStatus'
+            type: object
+            properties:
+              law:
+                type: object
+                properties:
+                  matsne_id:
+                    type: integer
+                  title:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+              article:
+                type: object
+                properties:
+                  number:
+                    type: string
+                  title:
+                    type: string
+                    nullable: true
+                  url:
+                    type: string
+                    format: uri
+                  markdown_url:
+                    type: string
+                    format: uri
+              snippet:
+                type: string
+                nullable: true
+        attribution:
+          type: string
+        official_source:
+          type: string
+  responses:
+    BadRequest:
+      description: 'Invalid request. The `error.code` field is machine-readable; possible values: `QUERY_REQUIRED`, `QUERY_TOO_LONG`, `INVALID_BODY`.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            queryRequired:
+              value:
+                error:
+                  code: QUERY_REQUIRED
+                  message: query is required
+                  field: query
+                  constraint:
+                    required: true
+            queryTooLong:
+              value:
+                error:
+                  code: QUERY_TOO_LONG
+                  message: query exceeds 500 characters
+                  field: query
+                  constraint:
+                    max_length: 500
+                  received_length: 712
+    RateLimited:
+      description: Too many requests. The `Retry-After` header and `error.constraint.retry_after_seconds` both indicate when to retry.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until the next request is allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            rateLimited:
+              value:
+                error:
+                  code: RATE_LIMITED
+                  message: Too many requests
+                  constraint:
+                    retry_after_seconds: 42
