@@ -1,4 +1,4 @@
-# legal.ge Public APIs (legal-ge-public-apis)
+# legal.ge Public APIs
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,120 +66,131 @@
 
 Georgia's (the country's) legal marketplace, exposing a public, keyless, read-only REST API that turns a natural-language description of a legal problem into matched practice areas and a ranked list of verified specialists — lawyers, law firms, accountants, tax consultants, mediators and enforcement agents — each with a canonical, locale-prefixed profile URL. The surface is deliberately agent-first: an OpenAPI 3.1 contract at /api/openapi.json, an APIs.json 0.19 index at /apis.json, an llms.txt trust contract at /llms.txt, a robots.txt that names and allows eleven AI crawlers on the public API paths, and an installable MCP server (@legalge/mcp, MIT) exposing find_legal_specialists and classify_legal_intent to Claude Desktop, Cursor and any MCP-aware client. Trilingual across Georgian, English and Russian; every specialist returned is verification-checked, and contact details are opt-in only.
 
-**APIs.json:** [https://legal-ge-public-apis.apievangelist.com/apis.yml](https://legal-ge-public-apis.apievangelist.com/apis.yml)
+**Areas:** Legal · Law · Legal Services · Directory · Georgia · AI Agents · MCP · Specialists · Professional Services · Marketplace · Multilingual · Legal Tech
 
-## Tags
+## legal.ge Public APIs on APIs.io
 
-- legal
-- law
-- legal-services
-- directory
-- georgia
-- ai-agents
-- mcp
-- model-context-protocol
-- specialists
-- professional-services
-- marketplace
-- multilingual
-- legal-tech
+Everything profiled for legal.ge Public APIs is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/legal-ge-public-apis/](https://apis.io/providers/legal-ge-public-apis/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (2)
 
-- **Created:** 2026-08-09
-- **Modified:** 2026-08-09
+- [legal.ge Public APIs Directory API](https://apis.io/apis/legal-ge-public-apis/legal-ge-public-apis-directory-api/) — Look up services, practice areas and verified specialists on legal.ge.
+- [legal.ge Public APIs Matching API](https://apis.io/apis/legal-ge-public-apis/legal-ge-public-apis-matching-api/) — Map a free-text legal question to practice areas, and optionally to ranked verified specialists.
 
-## APIs
+### Published properties
 
-### legal.ge Public APIs Directory API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Look up services, practice areas and verified specialists on legal.ge.
+#### MCP servers (1)
 
-- **Human URL:** [https://legal.ge](https://legal.ge)
-- **Base URL:** `https://legal.ge`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [legalge-mcp](https://apis.io/servers/legal-ge-public-apis/legalge-mcp/)
 
-- Directory
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [OpenAPI](openapi/legal-ge-public-apis-directory-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/legal-ge-public-apis-directory-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/legal-ge-public-apis-directory-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Legal Ge Public Apis Agentic Access](https://apis.io/agentic-access/legal-ge-public-apis/legal-ge-public-apis-agentic-access/)
+
+#### Examples (1)
+
+Example requests and responses.
+
+- [Legal Ge Public Apis Classify Response](https://apis.io/examples/legal-ge-public-apis/legal-ge-public-apis-classify-response/)
+
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [legal.ge Public Directory API](https://apis.io/collections/legal-ge-public-apis/open-legal-ge-public-apis-directory-api/)
+- [legal.ge Public Matching API](https://apis.io/collections/legal-ge-public-apis/open-legal-ge-public-apis-matching-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Legal Ge Public Apis Openapi Overlay](https://apis.io/overlays/legal-ge-public-apis/legal-ge-public-apis-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Legal Ge Public Apis Authentication](https://apis.io/security/legal-ge-public-apis/legal-ge-public-apis-authentication/)
+- [Legal Ge Public Apis Domain Security](https://apis.io/security/legal-ge-public-apis/legal-ge-public-apis-domain-security/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Legal Ge Public Apis Rate Limits](https://apis.io/rate-limits/legal-ge-public-apis/legal-ge-public-apis-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.legal.ge/)
 - [Documentation](https://legal.ge/llms.txt)
-- [Authentication](authentication/legal-ge-public-apis-authentication.yml)
-- [Conventions](conventions/legal-ge-public-apis-conventions.yml)
-- [Error Catalog](errors/legal-ge-public-apis-problem-types.yml)
-- [Rate Limits](rate-limits/legal-ge-public-apis-rate-limits.yml)
-- [Data Model](data-model/legal-ge-public-apis-data-model.yml)
-- [Examples](examples/legal-ge-public-apis-examples.yml)
-- [Terms of Service](https://legal.ge/terms)
-- [Tool Crosswalk](mcp/legal-ge-public-apis-tool-crosswalk.yml)
-- [Documentation](https://github.com/infolegalge/legal.ge-mcp)
-- [Packages](https://www.npmjs.com/package/@legalge/mcp)
-
-### legal.ge Public APIs Matching API
-
-Map a free-text legal question to practice areas, and optionally to ranked verified specialists.
-
-- **Human URL:** [https://legal.ge](https://legal.ge)
-- **Base URL:** `https://legal.ge`
-
-#### Tags
-
-- Matching
-
-#### Properties
-
-- [OpenAPI](openapi/legal-ge-public-apis-matching-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/legal-ge-public-apis-matching-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/legal-ge-public-apis-matching-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Documentation](https://legal.ge/llms.txt)
-- [Authentication](authentication/legal-ge-public-apis-authentication.yml)
-- [Conventions](conventions/legal-ge-public-apis-conventions.yml)
-- [Error Catalog](errors/legal-ge-public-apis-problem-types.yml)
-- [Rate Limits](rate-limits/legal-ge-public-apis-rate-limits.yml)
-- [Data Model](data-model/legal-ge-public-apis-data-model.yml)
-- [Examples](examples/legal-ge-public-apis-examples.yml)
-- [Terms of Service](https://legal.ge/terms)
-- [Tool Crosswalk](mcp/legal-ge-public-apis-tool-crosswalk.yml)
-- [Documentation](https://github.com/infolegalge/legal.ge-mcp)
-- [Packages](https://www.npmjs.com/package/@legalge/mcp)
-
-## Common Properties
-
-- [Domain Security](security/legal-ge-public-apis-domain-security.yml)
-- [Agentic Access](agentic-access/legal-ge-public-apis-agentic-access.yml)
-- [Documentation](https://legal.ge/llms.txt)
-- [API Reference](https://legal.ge/api/openapi.json)
-- [GitHub Organization](https://github.com/infolegalge)
+- [API reference](https://legal.ge/api/openapi.json)
+- [Pricing](https://legal.ge/en/pricing)
+- [Sign up](https://legal.ge/en/register)
 - [Support](https://legal.ge/en/contact)
 - [Blog](https://legal.ge/en/news)
-- [Pricing](https://legal.ge/en/pricing)
-- [Sign Up](https://legal.ge/en/register)
-- [Login](https://legal.ge/en/login)
-- [Terms of Service](https://legal.ge/terms)
-- [Privacy Policy](https://legal.ge/privacy)
-- [OpenAPI](openapi/_original/legal-ge-public-apis-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [L L Ms Txt](llms/legal-ge-public-apis-llms.txt)
-- [M C P Server](mcp/legal-ge-public-apis-mcp.yml)
-- [Tool Crosswalk](mcp/legal-ge-public-apis-tool-crosswalk.yml)
-- [Agent Skill](skills/_index.yml)
-- [Authentication](authentication/legal-ge-public-apis-authentication.yml)
-- [Conventions](conventions/legal-ge-public-apis-conventions.yml)
-- [Error Catalog](errors/legal-ge-public-apis-problem-types.yml)
-- [Rate Limits](rate-limits/legal-ge-public-apis-rate-limits.yml)
-- [Data Model](data-model/legal-ge-public-apis-data-model.yml)
-- [Examples](examples/legal-ge-public-apis-examples.yml)
-- [Lifecycle](lifecycle/legal-ge-public-apis-lifecycle.yml)
-- [Conformance](conformance/legal-ge-public-apis-conformance.yml)
-- [Packages](packages/legal-ge-public-apis-packages.yml)
-- [Overlay](overlays/legal-ge-public-apis-openapi-overlay.yaml)
-- [A P Is J S O N](https://legal.ge/apis.json)
+- [Terms of service](https://legal.ge/terms)
+- [Privacy policy](https://legal.ge/privacy)
+- [GitHub](https://github.com/infolegalge)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** legal.ge
-**Email:** contact@legal.ge
-**URL:** https://legal.ge
+**Kin Score 40.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 48.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 37.5 |
+| Access clarity | 44.7 |
+
+**Agent readiness 31.8** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | verified |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/legal-ge-public-apis/](https://apis.io/providers/legal-ge-public-apis/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for legal.ge Public APIs: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/legal-ge-public-apis/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
