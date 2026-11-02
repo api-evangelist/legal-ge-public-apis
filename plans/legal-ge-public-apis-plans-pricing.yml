@@ -1,0 +1,172 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://legal.ge/en/pricing
+sources:
+- https://legal.ge/en/pricing
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T161713
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: tiered-subscription
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+published: true
+note: Subscription tiers for legal specialists, firms and organisations in GEL; struck-through higher
+  prices shown as limited-time offers. Organisation plans grant monthly tokens (1 token = 1 ₾). No API
+  pricing on the page.
+plan_count: 10
+plans:
+- name: Freemium (specialists)
+  price_text: Free
+  period: month
+  unit: profile
+  included_quota: Specializations 1, Standard position, Analytics Basic
+- name: Pro (specialists)
+  price_text: 119₾ /mo
+  price: 119
+  currency: GEL
+  period: month
+  unit: profile
+  included_quota: Specializations 3, Boosted position, Analytics Advanced
+- name: Expert (specialists)
+  price_text: 199₾ /mo
+  price: 199
+  currency: GEL
+  period: month
+  unit: profile
+  included_quota: Specializations 10, Top position, Analytics Full
+- name: Basic (law firms)
+  price_text: Free
+  period: month
+  unit: firm
+  included_quota: Specializations 5, Specialists 5; Free for now, as part of a promotion
+- name: Established (law firms)
+  price_text: 259₾ /mo
+  price: 259
+  currency: GEL
+  period: month
+  unit: firm
+  included_quota: Specializations 10, Specialists 5
+- name: Enterprise (law firms)
+  price_text: 799₾ /mo
+  price: 799
+  currency: GEL
+  period: month
+  unit: firm
+  included_quota: Unlimited specializations and specialists
+- name: Organisation Free
+  price_text: Free
+  period: month
+  unit: organisation
+  included_quota: Tokens / month 300
+- name: Organisation Medium
+  price_text: 1000₾ /mo
+  price: 1000
+  currency: GEL
+  period: month
+  unit: organisation
+  included_quota: Tokens / month 2000
+- name: Organisation Large
+  price_text: 3000₾ /mo
+  price: 3000
+  currency: GEL
+  period: month
+  unit: organisation
+  included_quota: Tokens / month 9000
+- name: Professional email @legal.ge
+  price_text: 12 months for 144 000 LEX
+  currency: LEX
+  period: year
+  unit: mailbox
+  included_quota: LEX is bought at 1 000 LEX for 1 GEL
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - subscription
+  units: []
+  plans:
+  - name: Freemium (specialists)
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Pro (specialists)
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Expert (specialists)
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Basic (law firms)
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Established (law firms)
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Enterprise (law firms)
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Organisation Free
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Organisation Medium
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Organisation Large
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Professional email @legal.ge
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods:
+    - year
