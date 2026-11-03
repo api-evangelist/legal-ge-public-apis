@@ -44,10 +44,13 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-02.yml:
+    method: unknown
+    evidence: no authorship recorded
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-10-31T095417.yml:
+  kin/checks-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -104,6 +107,15 @@ artifacts:
   kin/score-2026-10-31T095417.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T171331.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T200237.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-02T082323.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/legal-ge-public-apis-lifecycle.yml:
     method: unknown
     evidence: no authorship recorded
@@ -140,11 +152,17 @@ artifacts:
   packages/legal-ge-public-apis-packages.yml:
     method: searched
     evidence: declared in the artifact
+  patterns/legal-ge-public-apis-patterns.yml:
+    method: derived
+    evidence: declared in the artifact
   plans/legal-ge-public-apis-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
   rate-limits/legal-ge-public-apis-rate-limits.yml:
     method: searched
+    evidence: declared in the artifact
+  rules/legal-ge-public-apis-rules.yml:
+    method: generated
     evidence: declared in the artifact
   security/legal-ge-public-apis-domain-security.yml:
     method: unknown
@@ -159,6 +177,9 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   skills/legal-ge-public-apis-look-up-a-specialist-by-name.md:
+    method: generated
+    evidence: declared in the artifact
+  sla/legal-ge-public-apis-sla.yml:
     method: generated
     evidence: declared in the artifact
   well-known/legal-ge-public-apis-apis.json:
