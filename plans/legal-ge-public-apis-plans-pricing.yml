@@ -84,7 +84,7 @@ plans:
   unit: mailbox
   included_quota: LEX is bought at 1 000 LEX for 1 GEL
 x-canonical:
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   vocabulary: engine/economics/plans-canonical.yml
   models:
   - subscription
