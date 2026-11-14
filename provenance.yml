@@ -5,9 +5,18 @@ artifacts:
   agentic-access/legal-ge-public-apis-agentic-access.yml:
     method: generated
     evidence: declared in the artifact
+  ai-preferences/legal-ge-public-apis-ai-preferences.yml:
+    method: harvested
+    evidence: declared in the artifact
   authentication/legal-ge-public-apis-authentication.yml:
     method: searched
     evidence: declared in the artifact
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
+    method: unknown
+    evidence: no authorship recorded
   collections/legal-ge-public-apis-directory-api.opencollection.json:
     method: derived
     evidence: openapi/legal-ge-public-apis-directory-api
@@ -28,6 +37,9 @@ artifacts:
     evidence: declared in the artifact
   data-model/legal-ge-public-apis-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  eligibility/legal-ge-public-apis-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/legal-ge-public-apis-problem-types.yml:
     method: derived
@@ -50,10 +62,13 @@ artifacts:
   heartbeat/2026-11-06.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-13.yml:
+    method: unknown
+    evidence: no authorship recorded
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -119,12 +134,18 @@ artifacts:
   kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/legal-ge-public-apis-lifecycle.yml:
     method: unknown
     evidence: no authorship recorded
   llms/legal-ge-public-apis-llms.txt:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
+  mcp/legal-ge-public-apis-hosted-mcp.yml:
+    method: unknown
+    evidence: no authorship recorded
   mcp/legal-ge-public-apis-mcp.yml:
     method: searched
     evidence: declared in the artifact
@@ -161,6 +182,9 @@ artifacts:
   plans/legal-ge-public-apis-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
+  privacy/legal-ge-public-apis-privacy-policy.yml:
+    method: harvested
+    evidence: declared in the artifact
   rate-limits/legal-ge-public-apis-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
@@ -184,6 +208,9 @@ artifacts:
     evidence: declared in the artifact
   sla/legal-ge-public-apis-sla.yml:
     method: generated
+    evidence: declared in the artifact
+  terms/legal-ge-public-apis-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   well-known/legal-ge-public-apis-apis.json:
     method: unknown
